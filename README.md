@@ -1,4 +1,4 @@
-# FCSDKiOS
+# FCSDK_iOS
 
 ## System Minimum Requirements ##
 * Xcode 12.5.1
@@ -15,5 +15,5 @@
 
 #### Please check this repository regularly for beta releases.
 
-We are happy to introduce *DocC* documenation for FCSDKiOS. Simply build the documentaion with **Command + Control + Shift + D** in your app or open the **FCSDKiOS.doccarchive** file and have all the documentation that you need right in Xcode along with a tutorial of how to build an app with FCSDKiOS.
+We are happy to introduce *DocC* documenation for FCSDK_iOS. Simply build the documentaion with **Command + Control + Shift + D** in your app or open the **FCSDK_iOS.doccarchive** file and have all the documentation that you need right in Xcode along with a tutorial of how to build an app with FCSDK_iOS.
 

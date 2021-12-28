@@ -1,10 +1,10 @@
 # Authentication
 
-This article will discuss the Authentication flow for FCSDK-iOS.
+This article will discuss the Authentication flow for FCSDKiOS.
 
 ## Overview
 
-Authentication is the entry point of an FCSDK-iOS app. Previously, in older versions of FCSDK-iOS, we would start an Auth process by importing `ACBClientSDK`. Starting in FCSDK-iOS 4.0.0 we have clarified what you import with what the SDK is called. For unification and clarity, you will now import FCSDK-iOS with `import FCSDKiOS`. Great! Now that we have discussed that, we can talk now about Authentication.  
+Authentication is the entry point of an FCSDKiOS app. Previously, in older versions of FCSDK-iOS, we would start an Auth process by importing `ACBClientSDK`. Starting in FCSDKiOS 4.0.0 we have clarified what you import with what the SDK is called. For unification and clarity, you will now import FCSDK-iOS with `import FCSDKiOS`. Great! Now that we have discussed that, we can talk now about Authentication.  
 
 ## Authenticating a User and it's Session
 

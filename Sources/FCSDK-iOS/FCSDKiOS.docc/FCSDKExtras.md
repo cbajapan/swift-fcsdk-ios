@@ -26,10 +26,11 @@ We now offer simulator support with FCSDKiOS. It is simple to set up. The Simula
 2. Drag and Drop the `.mp4` into the root level of your application like the picture shows bellow.
 
 ![An image showing how to add FCSDKiOS](image_6.png)
-
 3. Make sure you select `copy items if needed` and select the `target` you wish to add the video to, like the picture shows below.
-
 ![An image showing how to add FCSDKiOS](image_7.png)
+4. You will also want to add it to your Copy Bundle Resources in the apps target Build Phase.
+
+![An image showing how to add FCSDKiOS](image_8.png)
 
 It is now set up. Now when you make calls with the simulator, you will see the video from your real device and the mp4 will stream from the simulator. 
 

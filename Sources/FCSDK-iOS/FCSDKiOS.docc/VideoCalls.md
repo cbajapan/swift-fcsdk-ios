@@ -1,6 +1,6 @@
 # Video Calls
 
-In the complex world of Video Calls our goal is to make it as simple as possible. So in this article we will not give you an example of how to build an app, but we will show you the building blocks of how to generate Video Calls.
+In the complex world of Video Calls our goal is to make it as simple as possible. So in this article we will show you the building blocks of how to create video calls.
 
 ## Video Call Flow
 * Setup UI
@@ -18,12 +18,11 @@ We need to make sure our UI is setup properly for our Video to stream. ACBClient
 
 ```swift
 // RemoteView Property
-var remoteView: SampleBufferVideoCallView
+var remoteView: UIView
 
 // We can then set the ACBClientCall Object's remoteView's remoteView to our remoteView
 self.acbCall?.remoteView = self.remoteView
 ```
-#### Note: SampleBufferVideoCallView subclasses ACBView which inturn is a UIView. This is provided in the SDK for you to use in rendering your view.
 
 ## ACBClientPhone
 
@@ -35,12 +34,11 @@ We need to make sure our UI is setup properly for our Video to stream. ACBClient
 ### Create a property called   
 ```swift
 // Preview Property
-var previewView: SamplePreviewVideoCallView
+var previewView: UIView
 
 // We can then set the uc Object's phone previewView to our previewView
 uc.phone.previewView = previewView
 ```
-#### Note: SamplePreviewVideoCallView subclasses ACBView which inturn is a UIView. This is provided in the SDK for you to use in rendering your view.
 
 ## Audio/Video
 
@@ -82,17 +80,18 @@ let outboundCall = uc.phone.createCall(
 ```
 A complete outgoing call block could look something like this
 ```swift
-func initializeCall(previewView: SamplePreviewVideoCallView) async throws {
+func startCall(previewView: UIView) async throws {
     await MainActor.run {
         self.hasStartedConnecting = true
         self.connectingDate = Date()
     }
-    guard let uc = self.fcsdkCall?.uc else { throw OurErrors.nilACBUC }
-    uc.phone.delegate = self
-    uc.phone.previewView = previewView
+guard let uc = self.currentCall?.acbuc else { throw OurErrors.nilACBUC }
+uc.phone.delegate = self
+//We Pass the view up to the SDK
+uc.phone.previewView = previewView
 }
 
-func startFCSDKCall() async throws -> ACBClientCall? {
+func initializeFCSDKCall() async throws -> ACBClientCall? {
     guard let uc = self.fcsdkCall?.uc else { throw OurErrors.nilACBUC }
     let outboundCall = uc.phone.createCall(
         toAddress: self.fcsdkCall?.handle,
@@ -101,12 +100,12 @@ func startFCSDKCall() async throws -> ACBClientCall? {
         delegate: self
     )
     
-    self.fcsdkCall?.call = outboundCall
+        self.currentCall?.call = outboundCall
+        self.currentCall?.call?.enableLocalAudio(true)
+        self.currentCall?.call?.enableLocalVideo(true)
 
     await MainActor.run {
-        self.fcsdkCall?.call?.remoteView = self.fcsdkCall?.remoteView
-        self.fcsdkCall?.call?.enableLocalAudio(true)
-        self.fcsdkCall?.call?.enableLocalVideo(true)
+        self.currentCall?.call?.remoteView = self.currentCall?.remoteView
     }
     return self.fcsdkCall?.call
 }
@@ -116,54 +115,54 @@ If you have followed our example app. You will notice that we are using callkit.
 ```swift
 //Start Call
 func provider(_ provider: CXProvider, perform action: CXStartCallAction) {
-    print("start call action")
+    self.logger.info("Start call action")
     Task {
-        await self.fcsdkCallService.presentCommunicationSheet()
         var acbCall: ACBClientCall?
         do {
-            self.outgoingFCSDKCall = self.fcsdkCallService.fcsdkCall
-            guard let outgoingFCSDKCall = outgoingFCSDKCall else { return }
-            guard let preview = outgoingFCSDKCall.previewView else { return }
-            try await self.fcsdkCallService.initializeCall(previewView: preview)
-            acbCall = try await self.fcsdkCallService.startFCSDKCall()
-            outgoingFCSDKCall.call = acbCall
             let callUpdate = CXCallUpdate()
             callUpdate.supportsDTMF = true
             callUpdate.hasVideo = fcsdkCallService.hasVideo
-            callUpdate.supportsHolding = true
-            provider.reportCall(with: outgoingFCSDKCall.uuid, updated: callUpdate)
+            callUpdate.supportsHolding = false
             
+            guard let outgoingFCSDKCall = self.fcsdkCallService.currentCall else { return }
+            guard let preview = outgoingFCSDKCall.previewView else { return }
+            await self.fcsdkCallService.startCall(previewView: preview)
+            acbCall = try await self.fcsdkCallService.initializeFCSDKCall()
+            outgoingFCSDKCall.call = acbCall
+            
+            provider.reportCall(with: outgoingFCSDKCall.id, updated: callUpdate)
+            
+            await self.fcsdkCallService.hasStartedConnectingDidChange(provider: provider,
+                                                                      id: outgoingFCSDKCall.id,
+                                                                      date: self.fcsdkCallService.connectingDate ?? Date())
+            await self.fcsdkCallService.hasConnectedDidChange(provider: provider,
+                                                              id: outgoingFCSDKCall.id,
+                                                              date: self.fcsdkCallService.connectDate ?? Date())
+            await self.fcsdkCallService.addCall(call: outgoingFCSDKCall)
+            //We need to set the delegate initially because if the user is on another call we need to get notified through the delegate and end the call
+            self.fcsdkCallService.currentCall?.call?.delegate = self.fcsdkCallService
+            action.fulfill()
         } catch {
-            print("\(OurErrors.nilACBUC.rawValue)")
+            self.logger.error("\(error)")
+            action.fail()
         }
-        
-        await self.fcsdkCallService.hasStartedConnectingDidChange(provider: provider, id: outgoingFCSDKCall?.uuid ?? UUID(), date: self.fcsdkCallService.connectingDate ?? Date())
-        await self.fcsdkCallService.hasConnectedDidChange(provider: provider, id: outgoingFCSDKCall?.uuid ?? UUID(), date:self.fcsdkCallService.connectDate ?? Date())
-        
-        guard let oc = outgoingFCSDKCall else { return }
-        await self.callKitManager.addCall(call: oc)
-        action.fulfill()
     }
 }
 ```
 There is a lot going on here, but what you can notice is that when CallKit recevies the notification to start a call we call 
 ```swift 
-await initializeCall(previewView: preview)
+await startCall(previewView: preview)
 ```
 And then
 ```swift
-await startFCSDKCall()
+await initializeFCSDKCall()
 ```
 Asynchronously. Go ahead a play around with the call flow to get your desired behavior using our sample app as a guide.
 
 ## Answer a Call
 
 ```swift
-do {
-    try self.acbCall?.answer(withAudio: AppSettings.perferredAudioDirection(), andVideo: AppSettings.perferredVideoDirection())
-} catch {
-    print(error)
-}
+    self.acbCall?.answer(withAudio: AppSettings.perferredAudioDirection(), andVideo: AppSettings.perferredVideoDirection())
 ```
 
 Answering calls is triggered by a protocol that is called ACBClientPhoneDelegate that we need to conform to.
@@ -179,11 +178,7 @@ extension YourClass: ACBClientPhoneDelegate  {
     //Set the remote view
     call.remoteView = self.remoteView
 
-do {
-    try self.acbCall?.answer(withAudio: AppSettings.perferredAudioDirection(), andVideo: AppSettings.perferredVideoDirection())
-} catch {
-    print(error)
-}
+    self.acbCall?.answer(withAudio: AppSettings.perferredAudioDirection(), andVideo: AppSettings.perferredVideoDirection())
 }
     
     func phone(_ phone: ACBClientPhone?, didChange settings: ACBVideoCaptureSetting?, forCamera camera: AVCaptureDevice.Position) {
@@ -290,27 +285,6 @@ func phoneDidReceive(_ phone: ACBClientPhone?, call: ACBClientCall?) {
         
         // We need to temporarily assign ourselves as the call's delegate so that we get notified if it ends before we answer it.
         call?.delegate = self
-        
-        if UserDefaults.standard.bool(forKey: "AutoAnswer") {
-            
-            await MainActor.run {
-                let receivedCall = FCSDKCall(
-                    handle: call?.remoteAddress ?? "",
-                    hasVideo: self.fcsdkCall?.hasVideo ?? false,
-                    previewView: nil,
-                    remoteView: nil,
-                    uuid: UUID(),
-                    acbuc: uc,
-                    call: call!
-                )
-                
-                self.fcsdkCall = receivedCall
-                self.fcsdkCall?.call?.delegate = call?.delegate
-            }
-            await self.presentCommunicationSheet()
-            
-            
-        } else {
             // we need to pass this to the call manager
             await MainActor.run {
                 let receivedCall = FCSDKCall(
@@ -328,12 +302,10 @@ func phoneDidReceive(_ phone: ACBClientPhone?, call: ACBClientCall?) {
             }
             guard let call = self.fcsdkCall else {return}
             await self.appDelegate?.displayIncomingCall(fcsdkCall: call)
-            
-        }
     }
 }
 ```
-As you can see here we have an if check that determines if we have auto answer on. We also set some variables for our app to pass up to SwiftUI in order to do some behavior in our UI. As you remember Our sample app uses CallKit and our last line of code is telling the AppDelegate to do something with CallKit. Let's see exactly what that is.
+We set some variables for our app so that we can pass them up to SwiftUI in order to do some behavior in our UI. As you remember our sample app uses CallKit and our last line of code is telling the AppDelegate to do something with CallKit. Let's see exactly what that is.
 
 Inside of AppDelegate we have this method
 ```swift
@@ -388,21 +360,19 @@ func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
 Which then in turn calls the answerFCSDKCall method and presents our call to us.
 ```swift 
 func answerFCSDKCall() async throws {
-
-    try? await MainActor.run {
+    await MainActor.run {
         self.hasConnected = true
         self.connectDate = Date()
-        self.fcsdkCall?.call?.remoteView = self.fcsdkCall?.remoteView
-        guard let view = self.fcsdkCall?.previewView else { throw OurErrors.nilPreviewView }
-        guard let uc = self.acbuc else { throw OurErrors.nilACBUC }
-        uc.phone.previewView = view
+        self.presentCommunication = true
     }
-    
-    do {
-        try self.fcsdkCall?.call?.answer(withAudio: AppSettings.perferredAudioDirection(), andVideo: AppSettings.perferredVideoDirection())
-    } catch {
-        print("There was an error answering call Error: \(error)")
-    }
+
+    self.currentCall?.call?.remoteView = self.currentCall?.remoteView
+
+    guard let view = self.currentCall?.previewView else { throw OurErrors.nilPreviewView }
+    guard let uc = self.acbuc else { throw OurErrors.nilACBUC }
+    //We Pass the view up to the SDK
+    uc.phone.previewView = view
+    self.currentCall?.call?.answer(withAudio: AppSettings.perferredAudioDirection(), andVideo: AppSettings.perferredVideoDirection())
 }
 ```
 So if your delegates are set properly, your preview and remote views are set properly, your call flow conforms to the behavior expected by FCSDK, and if you have conformed to ACBClientPhoneDelegate and ACBClientCallDelegate then you should have Voice and Video Calls that work great. But just to clarify let's review.
@@ -416,7 +386,7 @@ There are 5 steps to making Voice and Video work.
 * Answer Call
 
     1. Whether using UIKit or Swift UI we need to make sure that we have our views properly anchored and made available to FCSDK. Please see the Article entitled <doc:FCSDKUI> for more information on that topic.
-    2. We can choose the Video Quality we want for out application
+    2. We can choose the Video Quality we want for our application
     3. We must give our app permissions to use the Camera and Microphone
     4. We need to set up a service object that we can make our calls from. This can be done in a view controller, but for archectural purposes it is a good idea to do this in it's own object. We want to make sure we conform to the call object's delegate, set our views, and then we can make our call on the `uc` object as shown bellow.
     5. In our Call Service object we can also conform to ACBClientPhoneDelegate in order to receive calls. Once you have conformed to the protcol you can create a call object and answer the call as shown bellow.
@@ -431,22 +401,32 @@ There are 5 steps to making Voice and Video work.
 ```
 
 ```swift
-//Answer a Call
+// We can answer calls according to our needs starting from this method.
 func phoneDidReceive(_ phone: ACBClientPhone?, call: ACBClientCall?) {
-let fcsdkCall = FCSDKCall(
-    handle: call?.remoteAddress ?? "",
-    hasVideo: self.fcsdkCall?.hasVideo ?? false,
-    previewView: nil,
-    remoteView: nil,
-    uuid: UUID(),
-    acbuc: uc,
-    call: call!
-)
-    do {
-        fcsdkCall.call?.answer(withAudio: AppSettings.perferredAudioDirection(),
-        andVideo: AppSettings.perferredVideoDirection())
-    } catch {
-        print(error)
+    Task {
+        guard let uc = self.acbuc else { return }
+        
+        // We need to temporarily assign ourselves as the call's delegate so that we get notified if it ends before we answer it.
+        call?.delegate = self
+            // we need to pass this to the call manager
+            await MainActor.run {
+                let receivedCall = FCSDKCall(
+                    handle: call?.remoteAddress ?? "",
+                    hasVideo: self.fcsdkCall?.hasVideo ?? false,
+                    previewView: nil,
+                    remoteView: nil,
+                    uuid: UUID(),
+                    acbuc: uc,
+                    call: call!
+                )
+                
+                self.fcsdkCall = receivedCall
+                self.fcsdkCall?.call?.delegate = call?.delegate
+            }
+            guard let call = self.fcsdkCall else {return}
+
+// This call to our **displayIncomingCall** method sets in motion the answer call flow.
+            await self.appDelegate?.displayIncomingCall(fcsdkCall: call)
     }
 }
 ```

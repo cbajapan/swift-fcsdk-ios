@@ -3,7 +3,7 @@
 In this article we will discuss how FCSDK works in the User Interface.
 
 ## Overview
-FCSDK is an iOS framework that leverages Real Time Communication Technology. We have API's that incorporate UIKit as a first class citizen. However in order to use such a rich API with SwiftUI a relatively new yet great UI framework, we must Use Apple's recommended way of leveraging UIKit inside of SwiftUI views call UIViewControllerRepresentable. This Article will introduce how we can use FCSDK both in UIKit and SwiftUI.
+FCSDK is an iOS framework that leverages Real Time Communication Technology. We have API's that incorporate UIKit as a first class citizen. However in order to use such a rich API with SwiftUI a relatively new UI framework, we must Use Apple's recommended way of leveraging UIKit inside of SwiftUI views call UIViewControllerRepresentable. This Article will introduce how we can use FCSDK both in UIKit and SwiftUI.
 
 ## UIKit
 
@@ -28,8 +28,8 @@ import FCSDKiOS
 
 class CommunicationViewController: UIViewController {
 
-var remoteView = SampleBufferVideoCallView()
-var previewView = SamplePreviewVideoCallView()
+var remoteView = UIView()
+var previewView = UIView()
 var fcsdkCall: FCSDKCall?
 
 
@@ -120,7 +120,7 @@ func updateUIViewController(_
 }
 }
 ```
-And that should do for now. Let's talk about what we did. we wrote a class that conforms to **UIViewControllerRepresentable**. That protocol requries us to write 2 methods **makeUIViewController()** and **updateUIViewController**. As the names suggest we make our UIKit View Controller with one and update it with the other. However for us to be able to pass our UIKit views to SwiftUI we need to write another class within the class we just wrote. We will call this class Coordinator.
+And that should do for now. Let's talk about what we did. We wrote a class that conforms to **UIViewControllerRepresentable**. That protocol requries us to write 2 methods **makeUIViewController()** and **updateUIViewController**. As the names suggest we make our UIKit View Controller with one and update it with the other. However for us to be able to pass our UIKit views to SwiftUI we need to write another class within the class we just wrote. We will call this class Coordinator.
 
 ```swift
 
@@ -151,7 +151,7 @@ func makeCoordinator() -> Coordinator {
 
 }
 ```
-So what coordinator is going to do for us is let us access the parent class which is **CommunicationViewControllerRepresentable** that parent is going to have our **ACBClientCall** object on it where our **previewView** Object exists in FCSDK. We also need to write a custom protocol to pass our views from UIKit to its parent. So let's implement that logic.
+So what coordinator is going to do for us is let us access the parent class which is **CommunicationViewControllerRepresentable** that parent is going to have our **ACBClientCall** Object on it where our **previewView** Object exists in FCSDK. We also need to write a custom protocol to pass our views from UIKit to its parent. So let's implement that logic.
 
 ```swift
 @Binding var fcsdkCall: FCSDKCall?
@@ -164,7 +164,7 @@ class Coordinator: NSObject, FCSDKCallDelegate {
         self.parent = parent
     }
 
-func passViewsToService(preview: SamplePreviewVideoCallView, remoteView: SampleBufferVideoCallView) async {
+func passViewsToService(preview: UIView, remoteView: UIView) async {
     await self.parent.fcsdkCall?.previewView = preview
     await self.parent.fcsdkCall?.remoteView = remoteView
 }
@@ -176,7 +176,7 @@ func makeCoordinator() -> Coordinator {
 }
 
 protocol FCSDKCallDelegate: AnyObject {
-    func passViewsToService(preview: SamplePreviewVideoCallView, remoteView: SampleBufferVideoCallView) async
+    func passViewsToService(preview: UIView, remoteView: UIView) async
 }
 ```
 Simple enough right? We write the protocol, create the Bindable property on **CommunicationViewControllerRepresentable** and pass the properties up the pipe. But we have a couple more things to do for it to work. Inside CommunicationViewController lets make some changes.
@@ -195,7 +195,7 @@ func makeUIViewController(context: UIViewControllerRepresentableContext<Communic
     return communicationViewController
 }
 ```
-Excellent, with all that said and done. we can call our **CommunicationViewControllerRepresentable** class inside our SwiftUI View.
+Excellent, with all that said and done, we can call our **CommunicationViewControllerRepresentable** class inside our SwiftUI View.
 
 ```swift
 struct Communication: View {

@@ -1,5 +1,5 @@
 # AED
-The application initially accesses the API via a single object, ACBUC, from which other objects can be retrieved. ACBUC has an attribute named aed, which is the starting point for all **Application Event Distribution** operations.
+The application initially accesses the API via a single object called ACBUC, from which other objects can be retrieved. ACBUC has an attribute named aed, which is the starting point for all **Application Event Distribution** operations.
 ## Overview
 
 To create an AED application, you need to:

@@ -22,7 +22,8 @@ func loginUser(networkStatus: Bool) async {
 
 // We Create our credentials and then made our call
 
-let payload = try? await NetworkRepository.shared.asyncLogin(loginReq: loginCredentials)
+let (data, response) = try? await repository.asyncLogin(loginReq: loginCredentials, reqObject: requestLoginObject())
+let payload = try JSONDecoder().decode(LoginResponse.self, from: data)
 
 // Now let's do stuff with our response
 

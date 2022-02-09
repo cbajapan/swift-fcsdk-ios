@@ -57,13 +57,13 @@ dependencies: [
 ]
 ```
 
-You can import the SDK in your project file like so for swift
+You can import the SDK in your project file like so for
+Swift
 ```swift
 import FCSDKiOS
 ````
-or 
+Objective-C
 ```swift
-@import FCSDKiOS
+@import FCSDKiOS;
 ```
-for Objective-C
 

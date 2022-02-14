@@ -52,23 +52,24 @@ Objective-C DispatchQueue
 ### Method changes
 
 - The following list is a list of methods that have changes and should be noted in your application.
-* `end()`
+ ACBTopicDelegate protocol has 3 methods where the version parameter in the following methods have change from an **int** to **NSInteger**
+* didSubmitWithKey
+* didDeleteDataSuccessfullyWithKey
+* didUpdateWithKey
 
-We have created an optional parameter in the **end()** method for ending **ACBClientCall**s. This method is on the **ACBClientCall** object. The method looks like this in swift.
-```swift 
-@objc public func end(_ call: ACBClientCall? = nil) {
-}
-```
-We now have more flexibilty in ending our call, we can specify the call and if we decide to pass nothing into the parameter then it will end the current call object. This proves to be usefull if our array of ACBClientCalls exceeds the currentCall. In theory this should never happen so we are asking you to conform to this method as in the example bellow.
+Bellow are examples of the change in API in Objective-C. Swift users will continues to use an **Int** value.
 
-Swift
 ```swift
-call?.end()
+- (void)topic:(ACBTopic *)topic didUpdateWithKey:(NSString *)key value:(NSString *)value version:(NSInteger)version deleted:(BOOL)deleted
 ```
-Objective-C
 ```swift
-[self.call end:nil];
+- (void)topic:(ACBTopic *)topic didDeleteDataSuccessfullyWithKey:(NSString *)key version:(NSInteger)version
 ```
+```swift
+- (void)topic:(ACBTopic *)topic didSubmitWithKey:(NSString *)key value:(NSString *)value version:(NSInteger)version
+````
+
+
 ### Property Name Changes
 
 - The following list is a list of properties that have changes and should be noted in your application.
@@ -89,7 +90,7 @@ As you can see the changes are identical in both Swift and Objective-C
 
 * sdk version
 
-We now are using a Constants file to store constant things
+We now are using a Constants file to store constant things.
 
 Swift
 ```swift 
@@ -99,4 +100,32 @@ Objective-C
 ```swift
 Constants.SDK_VERSION_NUMBER;
 ```
-### 
+
+### AED
+
+- With FCSDKiOS we are moving away from using NSDictionary. FCSDKiOS uses a class conforming to NSObject as a model layer rather than using Dictionaries. That being said we have created an Object for you to use called **AedData** and it's child object called **TopicData**. This approach simplifies your model layer and makes AED easier to work with. This will primarily be noticeable when conforming to the Delegate. The method **didConnectWithData** will now give you this object to work with once you have connected with the intended data.
+
+- You typically will not need to be concerned about constructing this object, but it may be used to store AED Model related things if you desire.
+
+* An **AedData Object** can be create like so..
+
+Swift
+
+```swift
+var arrayData = [TopicData]()
+let topicData = TopicData(key: "Some Key", value: "Some Value")
+arrayData.append(topicData)
+let aed = AedData(
+    type: "Some Type",
+    name: "Some Name",
+    topicData: arrayData,
+    message: "Some Message",
+    timeout: 0)
+```
+Objective-C
+```swift
+TopicData *topicData = [[TopicData alloc] initWithKey:@"Key" value:@"Value"];
+NSMutableArray *dataArray = [[NSMutableArray alloc] init];
+[dataArray addObject:topicData];
+AedData *data = [[AedData alloc] initWithType:@"Some Type" name:@"Some Name" topicData:dataArray message:@"Some Message" _timeout:0];
+```

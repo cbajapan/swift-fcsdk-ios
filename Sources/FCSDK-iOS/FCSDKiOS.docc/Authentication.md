@@ -92,7 +92,7 @@ func asyncLogin(loginReq: Login, reqObject: LoginRequest) async throws -> (Data,
 let scheme = loginReq.secureSwitch ? "https" : "http"
 
 // Set our URL
-let url = "\(scheme)://\(loginReq.server):\(loginReq.port)/csdk-sample/SDK/login"
+let url = "\(scheme)://\(loginReq.server):\(loginReq.port)/some-end-point"
 
 // Encode our LoginRequest Object
 let body = try? JSONEncoder().encode(loginReq.requestLoginObject())
@@ -139,7 +139,7 @@ func urlSession(
     }
 }
 ```
-## Authentication Seriveces
+## Authentication Services
 
 Finally, we can make the auth call. Inside of your Authentication Service(View Model), or perhaps you will make the call from a ViewController depending on your architecture, you can write something like this.
 

@@ -8,7 +8,7 @@ Starting in FCSDKiOS 4.0.0 we have migrated to a native Swift code base. We have
 
 ### Imports
 
-- The SDK is called FCSDKiOS, previously you would import ACBClientSDK from FCSDKiOS. We have aligned the SDK name with the module you import. So, now rather than importing ACBClientSDK into your project you simply import FCSDKiOS. The examples are shown bellow.
+- The SDK is called FCSDKiOS, previously you would import ACBClientSDK from FCSDKiOS. We have aligned the SDK name with the module you import. So, now rather than importing ACBClientSDK into your project you simply import FCSDKiOS. The examples are shown below.
 
 Swift
 ```swift
@@ -44,7 +44,7 @@ Objective-C DispatchQueue
 ```swift
 - (void) startCall {
     dispatch_async(dispatch_get_main_queue(), ^{
-     [self.hasStartedConnecting = true];
+     [self.hasStartedConnecting = YES];
 });
 }
 ```
@@ -52,10 +52,12 @@ Objective-C DispatchQueue
 ### Method changes
 
 - The following list is a list of methods that have changes and should be noted in your application.
- ACBTopicDelegate protocol has 3 methods where the version parameter in the following methods have change from an **int** to **NSInteger**
+ ACBTopicDelegate protocol has 3 methods where the version parameter in the following methods have change from an Objective-C **int** to a Swift **Int** which maps to **NSInteger**
 * didSubmitWithKey
 * didDeleteDataSuccessfullyWithKey
 * didUpdateWithKey
+* didChangeStatus
+* didReportInboundQualityChange
 
 Bellow are examples of the change in API in Objective-C. Swift users will continues to use an **Int** value.
 
@@ -68,7 +70,12 @@ Bellow are examples of the change in API in Objective-C. Swift users will contin
 ```swift
 - (void)topic:(ACBTopic *)topic didSubmitWithKey:(NSString *)key value:(NSString *)value version:(NSInteger)version
 ````
-
+```swift
+- (void) call:(ACBClientCall*)call didChangeStatus:(ACBClientCallStatus)status
+```
+```swift
+- (void) call:call didReportInboundQualityChange:(NSInteger)inboundQuality
+```
 
 ### Property Name Changes
 
@@ -107,7 +114,7 @@ Constants.SDK_VERSION_NUMBER;
 
 - You typically will not need to be concerned about constructing this object, but it may be used to store AED Model related things if you desire.
 
-* An **AedData Object** can be create like so..
+* An **AedData Object** can be created like so..
 
 Swift
 

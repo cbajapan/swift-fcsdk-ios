@@ -46,7 +46,7 @@ self.connectedToSocket = self.acbuc?.connection != nil
 /// - Parameters:
 ///   - sessionid: The SessionID we get back from the Server.
 ///   - networkStatus: The Network status from our Network Monitor.
- func createSession(sessionid: String, networkStatus: Bool) async {
+ func createSession(sessionid: String, networkStatus: Bool) {
 
 // Initialize the ACBUC Object with our SessionID and set the Delegate
      self.acbuc = ACBUC.uc(withConfiguration: sessionid, delegate: self)
@@ -71,7 +71,7 @@ self.connectedToSocket = self.acbuc?.connection != nil
 ``` swift
 
 /// Stop the Session
-    func stopSession() async {
+    func stopSession() {
         self.acbuc?.stopSession()
     }
 }

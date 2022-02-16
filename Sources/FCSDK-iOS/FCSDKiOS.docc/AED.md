@@ -31,7 +31,7 @@ Either of these creates a client-side representation of a topic and automaticall
 
 After connecting to the topic, the delegate will receive a didConnectWithData callback. (In the case of failure, it will receive a didNotConnectWithMessage callback with a message parameter (an String).) The didConnectWithData callback has a single data parameter containing all the data currently associated with the topic.
 
-The data parameter is an AedData Struct that is available for you to use. This struct contains all the properties needed for you to send Aed to the server, both in Swift and Objective-C. The application can iterate through the data items to display them to the newly connected user:
+The data parameter is an AedData Class that is available for you to use. This class contains all the properties needed for you to send Aed to the server, both in Swift and Objective-C. The application can iterate through the data items to display them to the newly connected user:
 ```swift
 func topic(_ topic: ACBTopic, didConnectWithData data: AedData) {
     Task {
@@ -48,10 +48,11 @@ func topic(_ topic: ACBTopic, didConnectWithData data: AedData) {
                 expiryClause = "no expiry"
             }
             
-            var msg = "Topic '\(currentTopic?.name ?? "")' connected succesfully (\(expiryClause))."
-            self.consoleMessage = msg
-            msg = "Current topic is '\(currentTopic?.name ?? "")'. Topic Data:"
-            self.consoleMessage = msg
+             guard let name = currentTopic?.name else { return }
+             var msg = "Topic '\(name)' connected succesfully (\(expiryClause))."
+             self.consoleMessage = msg
+             msg = "Current topic is '\(name)'. Topic Data:"
+             self.consoleMessage = msg
         }
     }
     guard let topicData = data.topicData else { return }
@@ -99,7 +100,7 @@ The client can delete the data item from the topic by calling:
 ```
 The delegate receives either a didDeleteDataSuccessfullyWithKey callback (containing the key and version) or a didNotDeleteDataWithKey callback (containing a message indicating the cause of failure).
 
-All clients subscribed to the topic will also receive a didUpdateWithKey callback, with the deleted parameter set to TRUE.
+All clients subscribed to the topic will also receive a didUpdateWithKey callback, with the deleted parameter set to true.
 
 ## Sending a Message to a Topic
 

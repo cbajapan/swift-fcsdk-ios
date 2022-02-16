@@ -11,8 +11,6 @@ VoIP apps need permissions to be VoIP apps on iOS. We have 3 main tasks to accom
 1. Enable Voice over IP Background mode
 ![Enable VoIP](image_8.png)
 2. Create a VoIP Certificate on developer.apple.com and install it into your Keychain
-3. Enable PushKit Capabilities
-![Enable PushKit](image_9.png)
 
 ## Certificates
 The first thing you are going to want to do is...
@@ -39,7 +37,7 @@ Seems simple but there are quite a few pieces in motion and when we add more com
 
 Let's create a call object
 ```swift
-final class FCSDKCall: NSObject {
+struct FCSDKCall {
 
     var handle: String
     var hasVideo: Bool
@@ -115,10 +113,10 @@ Here we have a class that Initializes our **CXCallController()**. Whenever we cr
 ```swift
 final class ProviderDelegate: NSObject, CXProviderDelegate {
     
-    internal let provider: CXProvider?
-    internal let callKitManager: CallKitManager
-    internal var incomingCall: FCSDKCall?
-    internal var outgoingFCSDKCall: FCSDKCall?
+    let provider: CXProvider?
+    let callKitManager: CallKitManager
+    var incomingCall: FCSDKCall?
+    var outgoingFCSDKCall: FCSDKCall?
     
     init(
         callKitManager: CallKitManager
@@ -197,16 +195,3 @@ This is just a partial example of the flow. To see a working example please stud
 4. Respond appropriately to the desired transaction
 
 Thats it... Our basic CallKit flow for working CallKit into your FCSDK Apps.
-
-## PushKit
-**Please note the FCSDK Sample app does not incorporate PushKit into it's CallKit flow.**
-
-PushKit is what we need to use in order to push notification to our app when our app is in the background. When your app is register for PushKit Notifications while your app is in the background or locked Apple Push Notifications(APN) will be sent via your server.
-
-`You Must` 
-
-**A.** register your app on your Apple Developer account
-
-and
-
-**B.** Configure your server to support Push Notifications 

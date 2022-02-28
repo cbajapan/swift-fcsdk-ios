@@ -1,10 +1,10 @@
-# FCSDKiOS
+# Swift FCSDKiOS
 
 ## System Minimum Requirements ##
 * Xcode 13
 * Monterey 12.1
 * swift-tools-version:5.5
-* iOS 12
+* iOS 13
 
 ## Binaries
 | **Platform / arch** | arm64  | x86_x64 |

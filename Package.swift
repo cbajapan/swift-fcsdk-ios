@@ -4,18 +4,18 @@
 import PackageDescription
 
 let package = Package(
-    name: "fcsdk-ios",
+    name: "swift-fcsdk-ios",
     products: [
         .library(
-            name: "FCSDK-iOS",
+            name: "SwiftFCSDKiOS",
             type: .static,
-            targets: ["FCSDK-iOS"]),
+            targets: ["SwiftFCSDKiOS"]),
     ],
     dependencies: [
     ],
     targets: [
         .target(
-            name: "FCSDK-iOS",
+            name: "SwiftFCSDKiOS",
             dependencies: [
                 "FCSDKiOS",
                 "CBARealTime"

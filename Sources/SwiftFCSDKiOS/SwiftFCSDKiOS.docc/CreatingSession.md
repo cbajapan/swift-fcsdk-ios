@@ -1,12 +1,26 @@
 # Create a ACBUC Session
 
-Here we will create our FCSDK Session in order to start using the SDK.
+Here we will create our FCSDK Session in order to start using the SDK. ACBUC is the entry point for FCSDK clients. One very important factor is that after we authenticate our User, the server sends back a SessionID in the response. We need this SessionID in order to create our Session Object (ACBUC Object). First we will show you the properties and methods available to you and then we will show you how you can use them.
 
-### ACBUC is the entry point for FCSDK clients. One very important factor is that after we authenticate our User, the server sends back a SessionID in the response. We need this SessionID in order to create our Session Object (ACBUC Object). So, without further ado, let's do that. 
+#### The ACBUC Object
+These properties and methods are what is publicly available to you for creating an application.
 
-Inside of our Login Request Method, where we receive the response, we want to do something with that response.
+<doc:ACBUCObject>
+
+#### The ACBUCDelegate
+You will need to conform to ACBUCDelegate in order to be notified of FCSDK behavior.
+
+<doc:ACBUCDelegate>
+
+#### ACBUCOptions 
+These are ACBUCOptions. For most applications you do not need to be concerned with applying options.
+
+<doc:ACBUCOptions>
+
 
 ## Handle Response Object
+
+Now that you have been able to review the technology needed to create an FCSDK application, we can start creating a session. Inside of our Login Request Method, where we receive the response, we want to do something with that response.
 
 ```swift
 class AuthenticationService: NSObject, ObservableObject {
@@ -51,7 +65,8 @@ self.connectedToSocket = self.acbuc?.connection != nil
 // Initialize the ACBUC Object with our SessionID and set the Delegate
      self.acbuc = ACBUC.uc(withConfiguration: sessionid, delegate: self)
 
-// Tell the object if the network is reachable or not
+// Tell the object if the network is reachable or not. 
+// This is needed in order to successfully register a session and set the ACBUCDelegate.
      self.acbuc?.setNetworkReachable(networkStatus)
 
 // Tell the object if we accept any certificate from the server
@@ -76,3 +91,40 @@ self.connectedToSocket = self.acbuc?.connection != nil
     }
 }
 ```
+
+## Available FCSDK Objects
+<doc:ACBUCObject>
+
+<doc:ACBUCDelegate>
+
+<doc:ACBUCOptions>
+
+<doc:ACBAudioDevice>
+
+<doc:ACBAudioDeviceManager>
+
+<doc:ACBClientAED>
+
+<doc:ACBClientCall>
+
+<doc:ACBClientCallDelegate>
+
+<doc:ACBClientCallErrorCode>
+
+<doc:ACBClientCallProvisionalResponse>
+
+<doc:ACBClientCallStatus>
+
+<doc:ACBClientPhone>
+
+<doc:ACBMediaDirection>
+
+<doc:ACBTopic>
+
+<doc:ACBVideoCapture>
+
+<doc:AedData>
+
+<doc:TopicData>
+
+<doc:Constants>

@@ -11,7 +11,7 @@ In the complex world of Video Calls our goal is to make it as simple as possible
 
 ## ACBClientCall
 
-ACBClientCall is the Call Object for Video/Audio Calls. 
+ACBClientCall is a communication object for Video/Audio Calls. You will need to be familiar with the different methods and properties available to you for the Call Object. Please review the <doc:ACBClientCall> article for implementation details of ACBClientCall.
 
 ### RemoteView
 We need to make sure our UI is setup properly for our Video to stream. ACBClientCall has a property that we need to set called remoteView that is used for remote video.
@@ -26,7 +26,7 @@ self.acbCall?.remoteView = self.remoteView
 
 ## ACBClientPhone
 
-ACBClientPhone is the Communication Object For Video/Audio Calls.
+ACBClientPhone is a communication object for Video/Audio Calls. You will need to be familiar with the different methods and properties available to you for the Phone Object. Please review the <doc:ACBClientPhone> article for implementation details of ACBClientPhone.
 
 ### PreviewView
 We need to make sure our UI is setup properly for our Video to stream. ACBClientPhone has a property that we need to set called previewView that is used for local video.
@@ -350,6 +350,51 @@ func answerFCSDKCall() async throws {
 ```
 So if your delegates are set properly, your preview and remote views are set properly, your call flow conforms to the behavior expected by FCSDK, and if you have conformed to ACBClientPhoneDelegate and ACBClientCallDelegate then you should have Voice and Video Calls that work great. But just to clarify let's review.
 
+### Switching between the Front and Back cameras
+
+By default, during video calls, FCSDK uses the front camera. The application can change this by calling the setCamera method of ACBClientPhone.
+
+```swift
+    func switchToBackCamera() {
+        self.phone.setCamera(.back)
+    }
+```
+
+Two parameters can be passed to this method:
+
+-  .back
+
+-  .front
+
+These enumeration values are in \<AVFoundation/AVCaptureDevice.h\>.
+
+The camera setting persists between calls; if the back camera is enabled during a video call, the next video call will also use that camera.
+
+The method can be called at any time; if there are no active video calls, the value takes effect when a video call is next in progress.
+
+### Monitoring the State of a Call
+
+A call transitions through several states, and the application can monitor these by assigning a delegate to the call:
+
+```swift
+    func phone(_ phone: ACBClientPhone, didReceiveCall call: ACBClientCall) {
+        call.delegate = self
+    }
+```
+Each state change fires the call:didChangeStatus: delegate method. As the outgoing call progresses toward being fully established, the application receives a number of calls to didChangeStatus, containing one of the <doc:ACBClientCallStatus> enumeration values each time.
+
+The application can adjust the UI by switching on the value of the status parameter, to give the user suitable feedback, for example by playing a local audio file for ringing or alerting:
+```swift
+    func call(_ call: ACBClientCall, didChange status: ACBClientCallStatus)
+        switch status {
+        case .ringing:
+        //React accordingly
+        case ...etc: //Respond to all cases or only desired cases by providing a default
+        default:
+            break
+    }
+```
+
 ## Review
 There are 5 steps to making Voice and Video work.
 * Setup UI
@@ -403,4 +448,5 @@ func phoneDidReceive(_ phone: ACBClientPhone?, call: ACBClientCall?) {
     }
 }
 ```
-#### Also it is to be noted that you will want to conform to *ACBClientCallDelegate* in order to receive call status updates as mentioned earlier.
+
+Also it is to be noted that you will want to conform to <doc:ACBClientCallDelegate> in order to receive call status updates as mentioned earlier.

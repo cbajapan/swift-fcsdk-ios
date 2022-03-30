@@ -5,14 +5,14 @@ import PackageDescription
 
 let package = Package(
     name: "swift-fcsdk-ios",
+    platforms: [.iOS(.v13), .macOS(.v11)],
     products: [
         .library(
-            name: "SwiftFCSDKiOS",
+            name: "FCSDKiOS",
             type: .static,
             targets: ["SwiftFCSDKiOS"]),
     ],
-    dependencies: [
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "SwiftFCSDKiOS",
@@ -20,8 +20,7 @@ let package = Package(
                 "FCSDKiOS",
                 "CBARealTime"
             ]),
-        .binaryTarget(name: "FCSDKiOS", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/client_sdk/FCSDKiOS-4.0.0-rc.1.2.10.xcframework.zip", checksum: "a9bb46ecd7be832a4a2e8a7e8d4d0b03514dfd76c52a73d591de0af4e9ed2b6a"),
+        .binaryTarget(name: "FCSDKiOS", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/client_sdk/FCSDKiOS-4.0.0.xcframework.zip", checksum: "618c1564e91c468d4fed64c9e6c6be6e9f56de201078c665a41a6b9963bd7e98"),
         .binaryTarget(name: "CBARealTime", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/real_time/CBARealTime-m95-1.0.1.xcframework.zip", checksum: "b40b7d5b08dbe11f18d60779ffb0cd6576e8e45069d22d81b016a23db88a9633")
     ]
-    
 )

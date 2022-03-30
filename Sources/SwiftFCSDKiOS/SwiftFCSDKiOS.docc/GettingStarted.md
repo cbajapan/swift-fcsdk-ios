@@ -12,6 +12,9 @@ This Documentation contains what you need in order to build an FCSDKiOS applicat
 - **You must be using Swift 5.5 or greater to use use this SDK**
 
 ### Articles
+<doc:MigratingFromLegacySDK>
+
+This article is to guide you through the changes in FCSDKiOS. 
 
 <doc:Authentication>
 
@@ -43,6 +46,40 @@ Here we will discuss the process of setting up an application with VoIP enabled 
 
 This Article discusses all of the extra important details of FCSDK not covered in other articles.
 
-<doc:MigratingFromLegacySDK>
 
-This article is to guide you through the changes in FCSDKiOS. 
+## Available FCSDK Objects
+<doc:ACBUCObject>
+
+<doc:ACBUCDelegate>
+
+<doc:ACBUCOptions>
+
+<doc:ACBAudioDevice>
+
+<doc:ACBAudioDeviceManager>
+
+<doc:ACBClientAED>
+
+<doc:ACBClientCall>
+
+<doc:ACBClientCallDelegate>
+
+<doc:ACBClientCallErrorCode>
+
+<doc:ACBClientCallProvisionalResponse>
+
+<doc:ACBClientCallStatus>
+
+<doc:ACBClientPhone>
+
+<doc:ACBMediaDirection>
+
+<doc:ACBTopic>
+
+<doc:ACBVideoCapture>
+
+<doc:AedData>
+
+<doc:TopicData>
+
+<doc:Constants>

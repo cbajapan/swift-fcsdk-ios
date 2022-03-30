@@ -2,6 +2,45 @@
 
 This Article discusses all of the extra important details of FCSDK not covered in other articles
 
+## Threading
+
+- We have created a new threading model built from tools by Apple. This threading model makes the best use of the voice and video concurrency flow. With that being said, whenever you are interacting with the UI in your application while interacting with the call flow, you will need to make sure you are running your code on the main thread. For example when we make a call using FCSDKiOS in the sample app, we are interacting with our apps UI during the call flow, therefore we need to make those calls on the main thread. You can run code on the main thread like so.
+
+```swift
+func startCall() async throws {
+// Run on the main thread
+    await MainActor.run {
+        self.hasStartedConnecting = true
+    }
+}
+```
+
+- We also have async versions of methods you may decided to use. If you choose to await on a method your call to that method must be wrapped in a **Task** or the call must be **async**. If you write an async method any FCSDK calls you use will automatically detect that they should use the async version of that call. If you want to side step this logic simply use a Task to wrap the async call instead of writing an async method. For example...
+
+```swift
+    func someMethod() async {
+// Valid
+    await uc.startSession()
+
+// Invalid, Swift Concurreny will force the await version
+    startSession()
+}
+```
+
+or
+
+```swift
+    func someMethod() {
+// Valid
+Task {
+        await startSession()
+}
+// Valid
+        startSession()
+    }
+```
+
+
 ## SPM
 To set up a project using the Swift Package we want to depend on the Swift Package at the root level of your project. 
 
@@ -196,3 +235,131 @@ After the program flow has completed and contains any relevent issues you expect
 ![An image showing how to add FCSDKiOS](image_9.png)
 Go ahead and right click on the file and select **Show Package Contents**. Next navigate into AppData, then into the Library Directory where you should find a file called **fcsdk.log**. Inspect the file to make sure it contains what you want to share.
 
+
+## Self-Signed Certificates
+
+If you are connecting to a server that uses a self-signed certificate, you need to add that certificate, and the associated CA root certificate, to the keychain on your client.
+
+You can obtain the server certificate and CA root certificate through the FAS Administration screens. The **_FAS Administration Guide_** explains how to view and export certificates. You need to extract the HTTPS Identity Certificate (server certificate) and the Trust Certificate (CA root certificate) that has signed your server certificate.
+
+Once you have exported and downloaded the two certificates, you need to copy them to your client. Please follow the user documentation for your device to install the certificates.
+
+You should then view the installed server certificate through the appropriate tool (**iOS Settings-\>General-\>Profiles** or **OSX Keychain**) and confirm that the server certificate is trusted. If it is, then your application should connect to the server.
+
+Alternatively, you can use the acceptAnyCertificate method of the ACBUC object before calling startSession, although this should only be used during development:
+```swift
+    let uc: ACBUC = ACBUC.uc(withConfiguration: sessionid, delegate: self)
+    uc.acceptAnyCertificate(true)
+    uc.startSession()
+```
+
+Since iOS 9, you also need to add a setting to your application's plist file to allow connection to a server using self-signed certificates. Set **Allow Arbitrary Loads** under **App Transport Security Settings** to YES.
+
+
+### Requesting Permission to use the Microphone and Camera
+
+On iOS 7.0 and higher, your application needs to ask the end user for permission to use the microphone and camera before they can make or receive calls. Because the microphone and camera permissions in iOS function at an application-level and not per call, you need to consider the most appropriate time to ask the end user for their permission. iOS remembers the answer they provide until your application is uninstalled or the permissions are reset in the _iOS Settings_. The end user can also change the microphone and camera permissions for your application in _iOS Settings_.
+
+The iOS SDK provides a helper method to request access to the microphone and camera: ACBClientPhone requestMicrophoneAndCameraPermission. This method delegates to the iOS permission APIs, and you should typically call it before making or receiving calls. The first time you call this method, it displays an individual alert for each requested permission. Subsequent calls do not display an alert unless you have reset your privacy settings in _iOS Settings_.
+
+When subsequently making or receiving a call, the iOS SDK checks whether the user has given the necessary permissions. For example, if you make an audio-only outgoing call, the end user only needs to have granted permission to use the microphone; if you want to receive an incoming audio and video call, the end user needs to have granted permission to use the microphone and camera.
+
+If you attempt to make or answer a call with insufficient permissions, the application receives the optional ACBClientCallDelegate didReceiveCallRecordingPermissionFailure callback method, and the call ends.
+
+The keys NSCameraUsageDescription and NSMicrophoneUsageDescription in your app plist file provide (part of) the text of the alert when the user is asked for permission to use the camera and microphone. On iOS 10 and higher, these keys are mandatory, and your application will fail if you do not provide them. See iOS SDK documentation for details.
+
+### DTMF Tones
+
+We reccommend generating DTMF Tones using CallKit's DTMF tone generator, but you can use FCSDK's DTMF tone generator.
+
+Once a call is established, an application can send DTMF tones on that call by calling the playDTMFCode method of the ACBClientCall object:
+```swift
+    call.playDTMFCode(_ code: "123", localPlayback: true)
+```
+-  The first parameter can either be a single tone, (for example, 6), or a sequence of tones (for example, \#123,\*456). Valid values for the tones are those characters conventionally used to represent the standard DTMF tones: 0123456789ABCD\#\*.
+
+The comma indicates that there should be a two second pause between the 3 and the \* tone.
+
+-  The second parameter is a boolean which indicates whether the application should play the tone back locally so that the user can hear it.
+
+### Dial Failures
+
+FCSDK does not call the ACBClientCallDelegate failure methods (didReceiveDialFailure and so on) for failures caused by a timeout. This results in the client seeing the **Trying to call…** dialog, despite the call being inactive. To avoid this, handle these timeout errors using the status delegate methods; examples can be found in the [Monitoring the State of a Call](#monitoring-the-state-of-a-call) section and in particular to the callback:
+
+```swift
+    call(_ call: FCSDKiOS.ACBClientCall, didChange status: FCSDKiOS.ACBClientCallStatus)
+```
+
+## Testing IPv6
+
+Apple require that apps submitted to the Apple store support IPv6-only networks, and you should test this during development; see:
+
+<https://developer.apple.com/library/ios/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/UnderstandingandPreparingfortheIPv6Transition/UnderstandingandPreparingfortheIPv6Transition.html>
+
+Neither Media Broker nor FAS support IPv6 directly; however, you can configure Media Broker to give an IPv6 public address to the client, and then you can access both FAS and Media Broker through a NAT64 router. Apple laptops support providing a NAT64 Wi-Fi hotspot, as long as you are able to connect to your network through another interface such as an Ethernet cable - for details on enabling this, see the _Test for IPv6 DNS64/NAT64 Compatibility Regularly_ section in the above link.
+
+To configure Media Broker to give IPv6 addresses to the client, edit the Media Broker’s settings:
+
+1.   In the configuration console, expand _WebRTC Client_ settings.
+
+2.   For each of the current public addresses click add, then enter an IPv6 equivalent in the public address.
+
+If using an Apple laptop hotspot, then the IPv6 address equivalent starts with
+
+64::ff9b::
+
+and is followed by the hexadecimal version of the IPv4 address. For example c0a8:131d is the equivalent of 192.168.19.29
+
+![An image showing RTP Ports](image_3.png)
+
+3.   Duplicate the three other fields from the IPv4 port and address.
+
+Apple sometimes require testing an app in full during submission, in which case a public NAT64 is required - contact support for details on how to implement this.
+
+#### Delegate Method For Parsing SSRC Information
+
+A new optional method has been added to the delegate `ACBClientCallDelegate`:
+
+```swift
+    func call(_ call: ACBClientCall, didReceiveSSRCsForAudio audioSSRCs: [AnyHashable]?, andVideo videoSSRCs: [AnyHashable]?)
+```
+This method has been implemented in the sample app (CBAFusion), and logs a console message ‘Received SSRC information for AUDIO XXX and VIDEO YYY’. (In PhoneViewController.m of the sample). There’s also a few lines of the code commented out in PhoneViewController.m following this call to logging; uncommenting them and building/testing the sample will pop up an alert showing the audio and video SSRC(s) when they become available.
+
+
+
+## Available FCSDK Objects
+<doc:ACBUCObject>
+
+<doc:ACBUCDelegate>
+
+<doc:ACBUCOptions>
+
+<doc:ACBAudioDevice>
+
+<doc:ACBAudioDeviceManager>
+
+<doc:ACBClientAED>
+
+<doc:ACBClientCall>
+
+<doc:ACBClientCallDelegate>
+
+<doc:ACBClientCallErrorCode>
+
+<doc:ACBClientCallProvisionalResponse>
+
+<doc:ACBClientCallStatus>
+
+<doc:ACBClientPhone>
+
+<doc:ACBMediaDirection>
+
+<doc:ACBTopic>
+
+<doc:ACBVideoCapture>
+
+<doc:AedData>
+
+<doc:TopicData>
+
+<doc:Constants>

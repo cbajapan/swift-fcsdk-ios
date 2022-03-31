@@ -47,6 +47,7 @@ To set up a project using the Swift Package we want to depend on the Swift Packa
 -   Open your Xcode project, navigate to the project, and then into Package Dependencies. Click the + button and add the pacakge like so.
 
 ![An image showing how to add FCSDKiOS](image_4.png)
+
 -   We want to make sure that the binary has been linked to the project. Click the **General** tab of your Target, and expand the _Frameworks, Libraries, and Embedded Content_ section by clicking on the title.
 -   If the Binary is not embedded then click the **+** button; the file explorer displays.
 -   Select the SwiftFCSDKiOS Library and press add

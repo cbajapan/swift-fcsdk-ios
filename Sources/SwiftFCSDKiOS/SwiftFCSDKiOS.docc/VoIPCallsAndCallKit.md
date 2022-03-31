@@ -9,7 +9,9 @@ Here we will discuss the process of setting up an application with VoIP enabled 
 ## Setup
 VoIP apps need permissions to be VoIP apps on iOS. We have 3 main tasks to accomplish. 
 1. Enable Voice over IP Background mode
+
 ![Enable VoIP](image_8.png)
+
 2. Create a VoIP Certificate on developer.apple.com and install it into your Keychain
 
 ## Certificates
@@ -18,9 +20,13 @@ The first thing you are going to want to do is...
 2. Press **Certificates +**
 3. Scroll to services
 4. Create the VoIP Service
+
 ![Enable Voip Service](image_10.png)
+
 Before you can complete the service creation you will need to request a certificate from a certificate authority. Go ahead and save it to disk.
+
 ![Enable Voip Service](image_11.png)
+
 Apple is going to ask for the certificate when you set up the VoIP Service afterward you can download the certificate and double click on it to have Keychain Access install it.
 
 ## CallKit

@@ -44,13 +44,16 @@ Task {
 ## SPM
 To set up a project using the Swift Package we want to depend on the Swift Package at the root level of your project. 
 
-1.   Open your Xcode project, navigate to the project, and then into Package Dependencies. Click the + button and add the pacakge like so.
+-   Open your Xcode project, navigate to the project, and then into Package Dependencies. Click the + button and add the pacakge like so.
+
 ![An image showing how to add FCSDKiOS](image_4.png)
-2.   We want to make sure that the binary has been linked to the project. Click the **General** tab of your Target, and expand the _Frameworks, Libraries, and Embedded Content_ section by clicking on the title.
-3.   If the Binary is not embedded then click the **+** button; the file explorer displays.
-4.   Select the FCSDK-iOS Library and press add
+-   We want to make sure that the binary has been linked to the project. Click the **General** tab of your Target, and expand the _Frameworks, Libraries, and Embedded Content_ section by clicking on the title.
+-   If the Binary is not embedded then click the **+** button; the file explorer displays.
+-   Select the SwiftFCSDKiOS Library and press add
+
 ![An image showing how to add FCSDKiOS](image_5.png)
-5.   Done, your project is now ready to use Fusion Client SDK
+
+-   Done, your project is now ready to use Fusion Client SDK
 
 ## Bitcode Support
 Bitcode can be enabled in the Build Settings
@@ -60,14 +63,17 @@ Bitcode can be enabled in the Build Settings
 ## Simulator Support
 We now offer simulator support with FCSDKiOS. It is simple to set up. The Simulator does not support the use of the camera, therefore we need to give it a video to stream to your real device.
 
-1. Create a short placeholder video (about 5 seconds long) and name it `Simulator.mp4`.
+- Create a short placeholder video (about 5 seconds long) and name it `Simulator.mp4`.
 
-2. Drag and Drop the `.mp4` into the root level of your application like the picture shows bellow.
+- Drag and Drop the `.mp4` into the root level of your application like the picture shows bellow.
 
 ![An image showing how to add FCSDKiOS](image_6.png)
-3. Make sure you select `copy items if needed` and select the `target` you wish to add the video to, like the picture shows below.
+
+- Make sure you select `copy items if needed` and select the `target` you wish to add the video to, like the picture shows below.
+
 ![An image showing how to add FCSDKiOS](image_7.png)
-4. You will also want to add it to your Copy Bundle Resources in the apps target Build Phase.
+
+- You will also want to add it to your Copy Bundle Resources in the apps target Build Phase.
 
 ![An image showing how to add FCSDKiOS](image_8.png)
 
@@ -232,7 +238,9 @@ Objective-C
 [ACBUC logToFile];
 ```
 After the program flow has completed and contains any relevent issues you expected you can navigate to Xcode's Window Tab in the status bar, select Devices and Simulators. Select the Device you ran your program on and download the Container.
+
 ![An image showing how to add FCSDKiOS](image_9.png)
+
 Go ahead and right click on the file and select **Show Package Contents**. Next navigate into AppData, then into the Library Directory where you should find a file called **fcsdk.log**. Inspect the file to make sure it contains what you want to share.
 
 

@@ -1,5 +1,6 @@
 # AED
 The application initially accesses the API via a single object called ACBUC, from which other objects can be retrieved. ACBUC has an attribute named aed, which is the starting point for all **Application Event Distribution** operations.
+
 ## Overview
 
 To create an AED application, you need to:
@@ -12,6 +13,16 @@ To create an AED application, you need to:
 
 4.   Disconnect from the topic when you no longer want to receive AED notifications.
 
+#### FCSDK Technology used in AED
+<doc:ACBClientAED>
+
+<doc:ACBTopic>
+
+<doc:ACBTopicDelegate>
+
+<doc:AedData>
+
+<doc:TopicData>
 
 ## Creating and Connecting to a Topic
 
@@ -113,3 +124,41 @@ If it is successful, the delegate receives a didSendMessageSuccessfullyWithMessa
 ### didReceiveMessage
 
 The delegate will receive a didReceiveMessage callback whenever any connected client (including itself) sends a message to the topic. The only parameter is the message parameter (containing the text of the sent message).
+
+
+## Available FCSDK Objects
+<doc:ACBUCObject>
+
+<doc:ACBUCDelegate>
+
+<doc:ACBUCOptions>
+
+<doc:ACBAudioDevice>
+
+<doc:ACBAudioDeviceManager>
+
+<doc:ACBClientAED>
+
+<doc:ACBClientCall>
+
+<doc:ACBClientCallDelegate>
+
+<doc:ACBClientCallErrorCode>
+
+<doc:ACBClientCallProvisionalResponse>
+
+<doc:ACBClientCallStatus>
+
+<doc:ACBClientPhone>
+
+<doc:ACBMediaDirection>
+
+<doc:ACBTopic>
+
+<doc:ACBVideoCapture>
+
+<doc:AedData>
+
+<doc:TopicData>
+
+<doc:Constants>

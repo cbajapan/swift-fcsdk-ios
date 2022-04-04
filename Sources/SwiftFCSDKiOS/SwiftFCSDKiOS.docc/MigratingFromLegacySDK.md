@@ -21,7 +21,8 @@ Objective-C
 
 ### Threading
 
-- We have created a new threading model built from tools by Apple. This threading model makes the best use of the voice and video concurrency flow. With that being said, whenever you are interacting with the UI in your application while interacting with the call flow, you will need to make sure you are running your code on the main thread. For example when we make a call using FCSDKiOS in the sample app, we are interacting with our apps UI during the call flow, therefore we need to make those calls on the main thread. You can run code on the main thread like so.
+- We have created a new threading model built from tools by Apple. This threading model makes the best use of the voice and video concurrency flow. With that being said, whenever you are interacting with the UI in your application while interacting with the call flow, you will need to make sure you are running your code on the main thread. For example when we make a call using FCSDKiOS in the sample app, we are interacting with our apps UI during the call flow, therefore we need to make those calls on the main thread. You can run code on the main thread like so. 
+
 Async/Await
 ```swift
 func startCall() async throws {
@@ -48,6 +49,30 @@ Objective-C DispatchQueue
 });
 }
 ```
+- We also have async versions of methods you may decided to use. If you choose to await on a method your call to that method must be wrapped in a **Task** or the call must be **async**. If you write an async method any FCSDK calls you use will automatically detect that they should use the async version of that call. If you want to side step this logic simply use a Task to wrap the async call instead of writing an async method. For example...
+
+```swift
+    func someMethod() async {
+// Valid
+    await uc.startSession()
+
+// Invalid, Swift Concurreny will force the await version
+    startSession()
+}
+```
+
+or
+
+```swift
+    func someMethod() {
+// Valid
+Task {
+        await startSession()
+}
+// Valid
+        startSession()
+    }
+```
 
 ### Method changes
 
@@ -61,21 +86,94 @@ Objective-C DispatchQueue
 
 Bellow are examples of the change in API in Objective-C. Swift users will continues to use an **Int** value.
 
+#### Changes in FCSDKiOS while using Swift as a client
+
 ```swift
-- (void)topic:(ACBTopic *)topic didUpdateWithKey:(NSString *)key value:(NSString *)value version:(NSInteger)version deleted:(BOOL)deleted
+// FCSDKiOS 4.0.0 API
+    self.acbuc = ACBUC.uc(withConfiguration: "", delegate: self)
+// Legacy API
+    self.acbuc = ACBUC.init(configuration: "", delegate: self)
+
+// FCSDKiOS 4.0.0 API
+    func topic(_ topic: ACBTopic, didUpdateWithKey key: String, value: String, version: Int, deleted: Bool) {}
+// Legacy API
+    func topic(_ topic: ACBTopic, didUpdateWithKey key: String, value: String, version: Int32, deleted: Bool) {}
+
+// FCSDKiOS 4.0.0 API
+    func topic(_ topic: ACBTopic, didSubmitWithKey key: String, value: String, version: Int) {}
+// Legacy API
+    func topic(_ topic: ACBTopic, didSubmitWithKey key: String, value: String, version: Int32) {}
+
+// FCSDKiOS 4.0.0 API
+    func topic(_ topic: ACBTopic, didConnectWithData data: AedData) {}
+// Legacy API
+    func topic(_ topic: ACBTopic, didConnectWithData data: [AnyHashable : Any])
+
+// FCSDKiOS 4.0.0 API
+    func call(_ call: ACBClientCall, didReportInboundQualityChange inboundQuality: Int) {}
+// Legacy API
+    func call(_ call: ACBClientCall, didReportInboundQualityChange inboundQuality: UInt) {}
+
+// FCSDKiOS 4.0.0 API
+    func call(_ call: ACBClientCall?, didReceiveCallRecordingPermissionFailure message: String)
+// Legacy API
+    func call(_ call: ACBClientCall, didReceiveCallRecordingPermissionFailure message: String)
+
+// FCSDKiOS 4.0.0 API
+    func uc(_ uc: ACBUC, willRetryConnectionNumber attemptNumber: Int, in delay: TimeInterval) {}
+// Legacy API
+    func uc(_ uc: ACBUC, willRetryConnectionNumber attemptNumber: UInt, in delay: TimeInterval) {}
 ```
-```swift
-- (void)topic:(ACBTopic *)topic didDeleteDataSuccessfullyWithKey:(NSString *)key version:(NSInteger)version
+
+#### Changes in FCSDKiOS while using Objective-C as a client
+
+```objective-c
+// FCSDKiOS 4.0.0 API
+- (void)phone:(ACBClientPhone * _Nonnull)phone didReceive:(ACBClientCall * _Nonnull)call {}
+// Legacy API
+- (void) phone:(ACBClientPhone*)phone didReceiveCall:(ACBClientCall*)call {}
+
+// FCSDKiOS 4.0.0 API
+- (void)call:(ACBClientCall * _Nonnull)call didChange:(enum ACBClientCallStatus)status {}
+// Legacy API
+- (void) call:(ACBClientCall*)call didChangeStatus:(ACBClientCallStatus)status {}
+
+// FCSDKiOS 4.0.0 API
+- (void )call:(ACBClientCall *)call didReportInboundQualityChange:(NSInteger)inboundQuality {}
+// Legacy API
+- (void) call:call didReportInboundQualityChange:(NSUInteger)inboundQuality {}
+
+// FCSDKiOS 4.0.0 API
+- (void)topic:(ACBTopic *)topic didUpdateWithKey:(NSString *)key value:(NSString *)value version:(NSInteger)version deleted:(BOOL)deleted {}
+// Legacy API
+- (void)topic:(ACBTopic *)topic didUpdateWithKey:(NSString *)key value:(NSString *)value version:(int)version deleted:(BOOL)deleted {
+
+// FCSDKiOS 4.0.0 API
+- (void)topic:(ACBTopic *)topic didSubmitWithKey:(NSString *)key value:(NSString *)value version:(NSInteger)version {}
+// Legacy API
+- (void)topic:(ACBTopic *)topic didSubmitWithKey:(NSString *)key value:(NSString *)value version:(int)version {
+
+// FCSDKiOS 4.0.0 API
+- (void)topic:(ACBTopic *)topic didConnectWithData:(AedData *)data {}
+// Legacy API
+- (void)topic:(ACBTopic *)topic didConnectWithData:(NSDictionary *)data {}
+
+// FCSDKiOS 4.0.0 API
+- (void )call:(ACBClientCall *)call didReportInboundQualityChange:(NSInteger)inboundQuality {}
+// Legacy API
+- (void) call:call didReportInboundQualityChange:(NSUInteger)inboundQuality {}
+
+// FCSDKiOS 4.0.0 API
+    [disconnectedTopic disconnect:deleteTopic];
+// Legacy API
+    [disconnectedTopic disconnectWithDeleteFlag:deleteTopic];
+
+// Deprecated in Legacy API
+    [ACBClientPhone requestMicrophoneAndCameraPermission: requestMic video: requestCam];
+// Use New Async API
+    [ACBClientPhone requestMicrophoneAndCameraPermission:requestMic video:requestCam completionHandler:^{}];
 ```
-```swift
-- (void)topic:(ACBTopic *)topic didSubmitWithKey:(NSString *)key value:(NSString *)value version:(NSInteger)version
-````
-```swift
-- (void) call:(ACBClientCall*)call didChangeStatus:(ACBClientCallStatus)status
-```
-```swift
-- (void) call:call didReportInboundQualityChange:(NSInteger)inboundQuality
-```
+
 
 ### Property Name Changes
 
@@ -90,7 +188,7 @@ Swift
 self.currentCall?.call?.remoteView = self.currentCall?.remoteView
 ```
 Objective-C
-```swift
+```objective-c
 self.call.remoteView = self.remoteVideoView;
 ```
 As you can see the changes are identical in both Swift and Objective-C
@@ -104,7 +202,7 @@ Swift
 Constants.SDK_VERSION_NUMBER
 ```
 Objective-C
-```swift
+```objective-c
 Constants.SDK_VERSION_NUMBER;
 ```
 
@@ -130,9 +228,46 @@ let aed = AedData(
     timeout: 0)
 ```
 Objective-C
-```swift
+```objective-c
 TopicData *topicData = [[TopicData alloc] initWithKey:@"Key" value:@"Value"];
 NSMutableArray *dataArray = [[NSMutableArray alloc] init];
 [dataArray addObject:topicData];
 AedData *data = [[AedData alloc] initWithType:@"Some Type" name:@"Some Name" topicData:dataArray message:@"Some Message" _timeout:0];
 ```
+
+## Available FCSDK Objects
+<doc:ACBUCObject>
+
+<doc:ACBUCDelegate>
+
+<doc:ACBUCOptions>
+
+<doc:ACBAudioDevice>
+
+<doc:ACBAudioDeviceManager>
+
+<doc:ACBClientAED>
+
+<doc:ACBClientCall>
+
+<doc:ACBClientCallDelegate>
+
+<doc:ACBClientCallErrorCode>
+
+<doc:ACBClientCallProvisionalResponse>
+
+<doc:ACBClientCallStatus>
+
+<doc:ACBClientPhone>
+
+<doc:ACBMediaDirection>
+
+<doc:ACBTopic>
+
+<doc:ACBVideoCapture>
+
+<doc:AedData>
+
+<doc:TopicData>
+
+<doc:Constants>

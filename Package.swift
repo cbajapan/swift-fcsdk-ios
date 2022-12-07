@@ -20,7 +20,7 @@ let package = Package(
                 "FCSDKiOS",
                 "CBARealTime"
             ]),
-        .binaryTarget(name: "FCSDKiOS", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/client_sdk/FCSDKiOS-4.1.0.xcframework.zip", checksum: "4ca98be9672886dc16eb40d573ff03894a44682cdf8109a75625c792f318cad2"),
+        .binaryTarget(name: "FCSDKiOS", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/client_sdk/FCSDKiOS-4.1.0.xcframework.zip", checksum: "3c3c0b7477ce8546ff219fd2d28192e64c93702c5e791df5a7335efad7257d24"),
         .binaryTarget(name: "CBARealTime", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/real_time/CBARealTime-m107-1.0.0.xcframework.zip", checksum: "c6f50586d9b8ce0e5268c3da1258cf18a85a79b8a9427f83da2225d10ffcda95")
     ]
 )

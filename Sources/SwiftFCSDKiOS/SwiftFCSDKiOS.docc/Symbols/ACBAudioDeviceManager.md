@@ -5,9 +5,8 @@ ACBAudioDeviceManager allows us to set both default and preferred audio device c
 
 ```swift
 /// `ACBAudioDeviceManager` is intended for applications to be able to interact with the AVSession in FCSDK
-@objc final public class ACBAudioDeviceManager : NSObject {
+@objc final public class ACBAudioDeviceManager : NSObject, @unchecked Sendable {
 
-    /// This method will start  the `AVAudioSession` singleton and set some default values
     @objc final public func start()
 
     /// Stops the `AVAudioSession`
@@ -31,6 +30,19 @@ ACBAudioDeviceManager allows us to set both default and preferred audio device c
 
     /// This method is intended to referesh the speakerPhone setting if it is needed
     @objc final public func refreshSpeakerphoneSetting()
+
+    /// This method tells WebRTC that we want to use manual Audio
+    @objc final public class func useManualAudioForCallKit()
+
+    ///  This method activates the **CallKit**  Audio Session and passes it up to **WebRTC**. This method must be called on
+    ///  **func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession)**
+    /// - Parameter audioSession: Our Audio Session from the **CallKit** provider delegate
+    @objc final public class func activeCallKitAudioSession(_ audioSession: AVAudioSession)
+
+    ///  This method deactivates the **CallKit** Audio Session and passes it up to **WebRTC**. This method must be called on
+    ///  **provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession)**
+    /// - Parameter audioSession: Our Audio Session from the **CallKit** provider delegate
+    @objc final public class func deactiveCallKitAudioSession(_ audioSession: AVAudioSession)
 }
 ```
 

@@ -60,10 +60,10 @@ self.connectedToSocket = self.acbuc?.connection != nil
 /// - Parameters:
 ///   - sessionid: The SessionID we get back from the Server.
 ///   - networkStatus: The Network status from our Network Monitor.
- func createSession(sessionid: String, networkStatus: Bool) {
+ func createSession(sessionid: String, networkStatus: Bool) async {
 
 // Initialize the ACBUC Object with our SessionID and set the Delegate
-     self.acbuc = ACBUC.uc(withConfiguration: sessionid, delegate: self)
+     self.acbuc = await ACBUC.uc(withConfiguration: sessionid, delegate: self)
 
 // Tell the object if the network is reachable or not. 
 // This is needed in order to successfully register a session and set the ACBUCDelegate.
@@ -78,7 +78,7 @@ self.connectedToSocket = self.acbuc?.connection != nil
      self.acbuc?.useCookies = useCookies
 
 // Start the Session
-     self.acbuc?.startSession()
+     await self.acbuc?.startSession()
 }
 ```
 
@@ -86,8 +86,8 @@ self.connectedToSocket = self.acbuc?.connection != nil
 ``` swift
 
 /// Stop the Session
-    func stopSession() {
-        self.acbuc?.stopSession()
+    func stopSession() async {
+        await self.acbuc?.stopSession()
     }
 }
 ```

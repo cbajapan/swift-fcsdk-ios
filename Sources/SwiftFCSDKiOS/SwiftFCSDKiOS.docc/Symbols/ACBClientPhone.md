@@ -13,7 +13,7 @@ Please see <doc:VideoCalls> for an explanation of how to use ACBClientCall
     @objc final public var mirrorFrontFacingCameraPreview: Bool
 
     /// An array of calls that are currently in progress.
-    @objc final public var currentCalls: [FCSDKiOS.ACBClientCall]? { get }
+    @objc final public var currentCalls: [FCSDKiOS.ACBClientCall] { get }
 
     /// The phone delegate.
     @objc weak final public var delegate: FCSDKiOS.ACBClientPhoneDelegate?
@@ -25,13 +25,13 @@ Please see <doc:VideoCalls> for an explanation of how to use ACBClientCall
     @objc final public var preferredCaptureResolution: FCSDKiOS.ACBVideoCapture
 
     /// The preferred capture framerate. If no preferred frame rate is specified, the best frame rate that the device is capable of will be chosen.
-    @objc final public var preferredCaptureFrameRate: UInt
+    @objc final public var preferredCaptureFrameRate: Int
 
-    /// This computed property is used to set the App's preview view for video calls using ``ACBView``.
-    @objc final public var previewView: UIView?
+    /// This computed property is used to set the App's preview view for video calls using `ACBView`.
+    @MainActor @objc final public var previewView: UIView?
 
-    /// This computed property is used to set the App's remote view for video calls using ``ACBView``.
-    @objc final public var remoteView: UIView?
+    /// This computed property is used to set the App's remote view for video calls using `ACBView`.
+    @MainActor @objc final public var remoteView: UIView?
 
     /// This method can be used to request permisions to use the microphone and camera.
     /// - Parameters:
@@ -57,6 +57,9 @@ extension ACBClientPhone {
     ///   - videoDirection: The ``ACBMediaDirection`` for the video on the call
     ///   - delegate: The ``ACBClientCallDelegate``
     /// - Returns: The ``ACBClientCall``
+    @available(*, deprecated, message: "use createCall() async instead")
     @objc final public func createCall(toAddress remoteAddress: String, withAudio audioDirection: FCSDKiOS.ACBMediaDirection, video videoDirection: FCSDKiOS.ACBMediaDirection, delegate: FCSDKiOS.ACBClientCallDelegate?) -> FCSDKiOS.ACBClientCall?
+
+    @objc final public func createCall(toAddress remoteAddress: String, withAudio audioDirection: FCSDKiOS.ACBMediaDirection, video videoDirection: FCSDKiOS.ACBMediaDirection, delegate: FCSDKiOS.ACBClientCallDelegate?) async -> FCSDKiOS.ACBClientCall?
 }
 ```

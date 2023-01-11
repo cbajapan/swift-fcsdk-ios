@@ -14,19 +14,25 @@ These are the methods available to you that you will need to use to be notified 
      - Parameters:
      - uc: uc The UC.
      */
-    @objc func ucDidStartSession(_ uc: FCSDKiOS.ACBUC)
+    @objc optional func ucDidStartSession(_ uc: FCSDKiOS.ACBUC)
+
+    @objc optional func didStartSession(_ uc: FCSDKiOS.ACBUC) async
 
     /** A notification to indicate that initialisation of the session failed.
      - Parameters:
      - uc: uc The UC.
      */
-    @objc func ucDidFail(toStartSession uc: FCSDKiOS.ACBUC)
+    @objc optional func ucDidFail(toStartSession uc: FCSDKiOS.ACBUC)
+
+    @objc optional func didFail(toStartSession uc: FCSDKiOS.ACBUC) async
 
     /**  A notification to indicate that the server has experienced a system failure.
      - Parameters:
      - uc: uc The UC.
      */
-    @objc func ucDidReceiveSystemFailure(_ uc: FCSDKiOS.ACBUC)
+    @objc optional func ucDidReceiveSystemFailure(_ uc: FCSDKiOS.ACBUC)
+
+    @objc optional func didReceiveSystemFailure(_ uc: FCSDKiOS.ACBUC) async
 
     /** A notification to indicate that there are problems with the network connection, the session
      has been lost, and all reconnection attempts have failed. See `uc(uc: ACBUC?, willRetryConnectionNumber attemptNumber: Int, in delay: TimerInterval)`
@@ -35,7 +41,9 @@ These are the methods available to you that you will need to use to be notified 
      - Parameters:
      - uc: uc The UC.
      */
-    @objc func ucDidLoseConnection(_ uc: FCSDKiOS.ACBUC)
+    @objc optional func ucDidLoseConnection(_ uc: FCSDKiOS.ACBUC)
+
+    @objc optional func didLoseConnection(_ uc: FCSDKiOS.ACBUC) async
 
     /**  A notification to indicate that there are problems with the network connection and that an attempt
      will be made to re-establish the session.
@@ -51,7 +59,9 @@ These are the methods available to you that you will need to use to be notified 
      - attemptNumber: - 1 indicates the first reconnection attempt, 2 the second attempt, etc.
      - delay: - the next reconnection attempt will be made after this delay.
      */
-    @objc optional func uc(_ uc: FCSDKiOS.ACBUC, willRetryConnectionNumber attemptNumber: UInt, in delay: TimeInterval)
+    @objc optional func uc(_ uc: FCSDKiOS.ACBUC, willRetryConnectionNumber attemptNumber: Int, in delay: TimeInterval)
+
+    @objc optional func uc(_ uc: FCSDKiOS.ACBUC, willRetryConnection attemptNumber: Int, in delay: TimeInterval) async
 
     /**
      A notification to indicate that a reconnection attempt has succeeded.
@@ -60,5 +70,8 @@ These are the methods available to you that you will need to use to be notified 
      - uc: uc The UC.
      */
     @objc optional func ucDidReestablishConnection(_ uc: FCSDKiOS.ACBUC)
+
+    @objc optional func didReestablishConnection(_ uc: FCSDKiOS.ACBUC) async
 }
+
 ```

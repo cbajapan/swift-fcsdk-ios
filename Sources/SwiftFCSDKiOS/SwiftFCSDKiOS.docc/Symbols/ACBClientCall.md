@@ -73,11 +73,15 @@ extension ACBClientCall {
 }
 
 extension ACBClientCall {
-
-    ///  This is or method used to answer an incoming call. When a user calls our end point FCSDK will notify us of an incoming call, at that point we must answer the call with this method.
-    /// - Parameters:
+    ///  This is our method used to answer an incoming call. When a user calls our end point FCSDK will notify us of an incoming call, at that point we must answer the call with this method.e     must answer the call with this     /// - Parameters:
     ///   - audioDir: The Direction we want to answer with. See... `ACBMediaDirection`
     ///   - videoDir:  The Direction we want to answer with. See... `ACBMediaDirection`
     @objc final public func answer(withAudio audioDir: FCSDKiOS.ACBMediaDirection, andVideo videoDir: FCSDKiOS.ACBMediaDirection)
+        
+    ///  This is our method used to answer an incoming call asynchronously. When a user calls our end point FCSDK will notify us of an incoming call, at that point we must answer the call     with this method.
+    /// - Parameters:
+    ///   - audioDir: The Direction we want to answer with. See... `ACBMediaDirection`
+    ///   - videoDir:  The Direction we want to answer with. See... `ACBMediaDirection`
+    @objc final public func answer(withAudio audioDir: FCSDKiOS.ACBMediaDirection, andVideo videoDir: FCSDKiOS.ACBMediaDirection) async
 }
 ```

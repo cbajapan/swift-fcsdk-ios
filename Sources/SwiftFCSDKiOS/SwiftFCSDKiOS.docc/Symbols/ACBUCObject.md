@@ -4,72 +4,79 @@ These are the methods available to you that you will need to use in order to cre
 
 ## Overview
 ```swift
-/// This is the delegate used to interact with the methods related to ``ACBUC``
-@objc weak final public var delegate: FCSDKiOS.ACBUCDelegate?
+@objc final public class ACBUC : NSObject {
 
-/// This is the ``ACBClientAED`` Object
-@objc final public var aed: FCSDKiOS.ACBClientAED { get }
+    /// This is the delegate used to interact with the methods related to ``ACBUC``
+    @objc weak final public var delegate: FCSDKiOS.ACBUCDelegate?
 
-/// This property allows applications to use cookies
-@objc final public var useCookies: Bool
+    /// This is the ``ACBClientAED`` Object
+    @objc final public var aed: FCSDKiOS.ACBClientAED { get }
 
-/// This property gives the up to date websocket connection status
-@objc final public var connection: Bool
+    /// This property allows applications to use cookies
+    @objc final public var useCookies: Bool
 
-/// This method is used to override the LoggingSystem and writes the logs to a file for Debugging. **We want to only initialize the LoggingSystem Bootstrap once**
-@objc final public class func logToFile(_ logLevel: FCSDKiOS.LoggingLevel = .debug)
+    /// This property gives the up to date websocket connection status
+    @objc final public var connection: Bool
 
-/// The static method to initialize the ``ACBUC`` object
-/// - Parameters:
-///   - withConfiguration: The Configuration string
-///   - delegate: The ``ACBUCDelegate``
-/// - Returns: The ``ACBUC`` Object
-@objc final public class func uc(withConfiguration: String, delegate: FCSDKiOS.ACBUCDelegate?) -> FCSDKiOS.ACBUC
+    /// This method is used to override the LoggingSystem and writes the logs to a file for Debugging. **We want to only initialize the LoggingSystem Bootstrap once**
+    @objc final public class func logToFile(_ logLevel: FCSDKiOS.LoggingLevel = .debug)
 
-/// The static method to initialize the ``ACBUC`` object
-/// - Parameters:
-///   - withConfiguration: The Configuration string
-///   - stunServers: An array of Stun Servers
-///   - delegate: The ``ACBUCDelegate``
-/// - Returns: The ``ACBUC`` Object
-@objc final public class func uc(withConfiguration: String, stunServers: [String]?, delegate: FCSDKiOS.ACBUCDelegate?) -> FCSDKiOS.ACBUC
+    /// The static method to initialize the ``ACBUC`` object
+    /// - Parameters:
+    ///   - withConfiguration: The Configuration string
+    ///   - delegate: The ``ACBUCDelegate``
+    /// - Returns: The ``ACBUC`` Object
+    @available(*, deprecated, message: "Will be removed in future versions of FCSDKiOS, use the Async version instead.")
+    @objc final public class func uc(withConfiguration: String, delegate: FCSDKiOS.ACBUCDelegate?) -> FCSDKiOS.ACBUC
 
-/// The static method to initialize the ``ACBUC`` object
-/// - Parameters:
-///   - withConfiguration: The Configuration string
-///   - stunServers: An array of Stun Servers
-///   - delegate: The ``ACBUCDelegate``
-///   - options: Additional ``ACBUCOptions``
-/// - Returns: The ``ACBUC`` Object
-@objc final public class func uc(withConfiguration: String, stunServers: [String]?, delegate: FCSDKiOS.ACBUCDelegate?, options: FCSDKiOS.ACBUCOptions) -> FCSDKiOS.ACBUC
+    /// The static method to initialize the ``ACBUC`` object
+    /// - Parameters:
+    ///   - withConfiguration: The Configuration string
+    ///   - delegate: The ``ACBUCDelegate``
+    /// - Returns: The ``ACBUC`` Object
+    @objc final public class func uc(withConfiguration: String, delegate: FCSDKiOS.ACBUCDelegate?) async -> FCSDKiOS.ACBUC
 
-/// This method initializes the ``ACBClientPhone`` object lazily because we only want to initialized it, if it has not yet been intialized.
-/// This behavior is needed because FCSDK does not support concurrent calls.
-/// When we register we  create the ``ACBClientPhone`` object via the lazy variable. This will only be initialized once per registration.
-/// in which we set our `communicationDelegate`
-@objc final public var phone: FCSDKiOS.ACBClientPhone
+    /// The static method to initialize the ``ACBUC`` object
+    /// - Parameters:
+    ///   - withConfiguration: The Configuration string
+    ///   - stunServers: An array of Stun Servers
+    ///   - delegate: The ``ACBUCDelegate``
+    /// - Returns: The ``ACBUC`` Object
+    @objc final public class func uc(withConfiguration: String, stunServers: [String] = [], delegate: FCSDKiOS.ACBUCDelegate?) async -> FCSDKiOS.ACBUC
 
-/// Starts the call session async without a callback
-@objc final public func startSession()
+    /// The static method to initialize the ``ACBUC`` object
+    /// - Parameters:
+    ///   - withConfiguration: The Configuration string
+    ///   - stunServers: An array of Stun Servers
+    ///   - delegate: The ``ACBUCDelegate``
+    ///   - options: Additional ``ACBUCOptions``
+    /// - Returns: The ``ACBUC`` Object
+    @objc final public class func uc(withConfiguration: String, stunServers: [String] = [], delegate: FCSDKiOS.ACBUCDelegate?, options: FCSDKiOS.ACBUCOptions) async -> FCSDKiOS.ACBUC
 
-///Starts the a call session. A callback is available on completion in Objective-C
-@objc final public func startSession() async
+    @objc final public var phone: FCSDKiOS.ACBClientPhone
 
-/// Stops a server session
-@objc final public func stopSession()
+    /// Starts the call session async without a callback
+    @objc final public func startSession()
 
-/// Stops a server session.  A callback is available on completion in Objective-C
-@objc final public func stopSession() async
+    ///Starts the a call session. A callback is available on completion in Objective-C
+    @objc final public func startSession() async
 
-/// Use this method to notify FCSDK that the application has a network connection
-/// - Parameter networkSatisfied: A boolean value determining whether or not the application has a network connection
-@objc final public func setNetworkReachable(_ networkSatisfied: Bool)
+    /// Stops a server session
+    @objc final public func stopSession()
 
-/// Use this method to notify FCSDK that the application has a network connection.  A callback is available on completion in Objective-C
-/// - Parameter networkSatisfied: A boolean value determining whether or not the application has a network connection
-@objc final public func setNetworkReachable(_ networkSatisfied: Bool) async
+    /// Stops a server session.  A callback is available on completion in Objective-C
+    @objc final public func stopSession() async
 
-/// This method tells FCSDK the rule determined to allow any certificate
-/// - Parameter accept: A boolean value determining whether or not the server accepts any certificate
-@objc final public func acceptAnyCertificate(_ accept: Bool)
+    /// Use this method to notify FCSDK that the application has a network connection
+    /// - Parameter networkSatisfied: A boolean value determining whether or not the application has a network connection
+    @objc final public func setNetworkReachable(_ networkSatisfied: Bool)
+
+    /// Use this method to notify FCSDK that the application has a network connection.  A callback is available on completion in Objective-C
+    /// - Parameter networkSatisfied: A boolean value determining whether or not the application has a network connection
+    @objc final public func setNetworkReachable(_ networkSatisfied: Bool) async
+
+    /// This method tells FCSDK the rule determined to allow any certificate
+    /// - Parameter accept: A boolean value determining whether or not the server accepts any certificate
+    @objc final public func acceptAnyCertificate(_ accept: Bool)
+}
 ```

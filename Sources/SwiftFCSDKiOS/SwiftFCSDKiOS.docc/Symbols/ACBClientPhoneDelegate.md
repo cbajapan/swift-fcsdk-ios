@@ -8,9 +8,13 @@ ACBClientPhoneDelegate is used to reveive notifications on the ACBClientPhone Ob
 @objc public protocol ACBClientPhoneDelegate : NSObjectProtocol {
 
     /// A notification to indicate an incoming call.
-    @objc func phone(_ phone: FCSDKiOS.ACBClientPhone, didReceiveCall call: FCSDKiOS.ACBClientCall)
+    @objc optional func phone(_ phone: FCSDKiOS.ACBClientPhone, didReceive call: FCSDKiOS.ACBClientCall)
+
+    @objc optional func phone(_ phone: FCSDKiOS.ACBClientPhone, received call: FCSDKiOS.ACBClientCall) async throws
 
     /// A notification that video is being captured at a specified resolution and frame-rate. Depending on the capabilities of the device, these settings may be different from the preferred resolution and framerate set on the phone.
-    @objc optional func phone(_ phone: FCSDKiOS.ACBClientPhone, didChangeSettings settings: FCSDKiOS.ACBVideoCaptureSetting?, forCamera camera: AVCaptureDevice.Position)
+    @objc optional func phone(_ phone: FCSDKiOS.ACBClientPhone, didChangeSettings settings: FCSDKiOS.ACBVideoCaptureSetting, forCamera camera: AVCaptureDevice.Position)
+
+    @objc optional func phone(_ phone: FCSDKiOS.ACBClientPhone, didChangeSettings settings: FCSDKiOS.ACBVideoCaptureSetting, for camera: AVCaptureDevice.Position) async throws
 }
 ```

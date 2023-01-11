@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "swift-fcsdk-ios",
-    platforms: [.iOS(.v13), .macOS(.v11)],
+    platforms: [.iOS(.v13), .macOS(.v12)],
     products: [
         .library(
             name: "FCSDKiOS",

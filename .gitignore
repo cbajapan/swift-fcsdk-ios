@@ -6,5 +6,6 @@ xcuserdata/
 DerivedData/
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 *.xcframework
+*.xcframework.zip
 build
 .env

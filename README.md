@@ -60,7 +60,34 @@ dependencies: [
 ]
 ```
 
-You can import the SDK in your project file like so for
+## CocoaPods ##
+
+Starting in version 4.2.0 of FCSDKiOS we are supporting CocoaPods as a delivery mechanism.
+
+In order to use our CocoaPod please follow the following instructions.
+
+1. Navigate to your project 
+2. Run `pod init`
+3. Run `open -a Xcode Podfile`
+4. Edit the Podfile as indicated below
+
+```
+source 'https://github.com/cbajapan/swift-fcsdk-ios'
+
+target 'CBAFusion' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for CBAFusion
+pod 'FCSDKiOS', '~> 4.2.0'
+pod 'WebRTC', '~> 110.0.0'
+end
+```
+5. Close the Podfile
+6. Run `pod install`
+7. You now will use the **.xcworkspace** instead of **.xcodeproj** as a project source.
+
+## Import the SDK into your project ##
 Swift
 ```swift
 import FCSDKiOS
@@ -69,4 +96,3 @@ Objective-C
 ```swift
 @import FCSDKiOS;
 ```
-

@@ -69,4 +69,3 @@ Objective-C
 ```swift
 @import FCSDKiOS;
 ```
-

@@ -8,6 +8,8 @@ Starting in FCSDKiOS 4.0.0 we have migrated to a native Swift code base. We have
 
 ### Version Changes
 
+<doc:Version-4.2.0>
+
 <doc:Version-4.1.0>
 
 ### Imports

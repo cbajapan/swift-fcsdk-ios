@@ -32,7 +32,7 @@ When a call is finished the **SDK** consumer is required to clean up the call by
 ```
 
 ### AVCaptureSession
-In order to check if your devices support Multitasking Camera Access, when a **PreviewBufferView** is created we can get the **AVCaptureSession** from the **PreviewBufferView**. If your Device is supported by Apple, you can use the new **AVPictureInPictureVideoCallViewController** provided by Apple. Otherwise you will need to continue using **AVPictureInPictureController** and request permission from Apple for the proper entitlement. This method only works if you are using **PreviewBufferView** for your Local Video UIView.
+In order to check if your devices support Multitasking Camera Access, when a **PreviewBufferView** is created we can get the **AVCaptureSession** from the **PreviewBufferView**. If your devices are supported by Apple, you can use the new **AVPictureInPictureVideoCallViewController** provided by Apple. Otherwise you will need to continue using **AVPictureInPictureController** and request permission from Apple for the proper entitlement. This method only works if you are using **PreviewBufferView** for your Local Video UIView.
 ```swift
 @available(iOS 15, *)
 @objc final public func captureSession() async -> AVCaptureSession?
@@ -41,9 +41,9 @@ In order to check if your devices support Multitasking Camera Access, when a **P
 An example in checking for the method is as follows:
 ```swift
 if captureSession.isMultitaskingCameraAccessSupported {
-// Use AVPictureInPictureVideoCallViewController
+    // Use AVPictureInPictureVideoCallViewController
 } else {
-// Use AVPictureInPictureController
+    // Use AVPictureInPictureController
 }
 ```
 

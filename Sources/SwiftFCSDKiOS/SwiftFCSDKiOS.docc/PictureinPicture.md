@@ -44,9 +44,9 @@ var pipController: AVPictureInPictureController!
 func showPip(show: Bool) async {
 if show {
     if AVPictureInPictureController.isPictureInPictureSupported() {
-        pipController.startPictureInPicture()
+            pipController.startPictureInPicture()
         } else {
-        self.logger.info("PIP not Supported")
+            self.logger.info("PIP not Supported")
         }
     } else {
         pipController.stopPictureInPicture()
@@ -76,7 +76,7 @@ if #available(iOS 16.0, *) {
            await aChipLogic()
         }
     } else {
-       await aChipLogic()
+        await aChipLogic()
     }
 }
 

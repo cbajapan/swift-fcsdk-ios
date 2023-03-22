@@ -12,6 +12,10 @@ This Documentation contains what you need in order to build an FCSDKiOS applicat
 - **You must be using Swift 5.5 or greater to use use this SDK**
 
 ### Articles
+<doc:Version-4.2.0>
+
+This article is to guide you through the changes of FCSDKiOS version 4.2.0. 
+
 <doc:Version-4.1.0>
 
 This article is to guide you through the changes of FCSDKiOS version 4.1.0. 

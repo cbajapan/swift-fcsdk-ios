@@ -6,13 +6,13 @@ FCSDKiOS offers Picture in Picture support. In order to use this feature you wil
 
 The Picture in Picture feature is set up in the consumer of the **SDK**, however **FCSDKiOS** gives you all of the needed pieces in order to build a PiP app. 2 things are required to use Picture in Picture mode:
 
-1. Your application must be using **FCSDKiOS**'s Preview Buffer View
-2. Your application must be using **FCSDKiOS**'s Sample Buffer View
+1. Your application must be using **FCSDKiOS**'s Local Buffer View
+2. Your application must be using **FCSDKiOS**'s Remote Buffer View
 
 If you have conformed to these 2 **UIView**s please see how to set up Picture in Picture below.
 
 ### AVCaptureSession
-In order to check if your devices support Multitasking Camera Access, when a **PreviewBufferView** is created we can get the **AVCaptureSession** from the **PreviewBufferView**. If your Devices is supported by Apple, you can use the new **AVPictureInPictureVideoCallViewController** provided by Apple. Otherwise, you will need to continue using **AVPictureInPictureController** and request permission from Apple for the proper entitlement. This method only works if you are using **PreviewBufferView** for your Local Video UIView.
+In order to check if your devices support Multitasking Camera Access, when a **LocalBufferView** is created we can get the **AVCaptureSession** from the **LocalBufferView**. If your devices are supported by Apple, you can use the new **AVPictureInPictureVideoCallViewController** provided by Apple. Otherwise, you will need to continue using **AVPictureInPictureController** and request permission from Apple for the proper entitlement. This method only works if you are using **LocalBufferView** for your Local Video UIView.
 ```swift
 @available(iOS 15, *)
 @objc final public func captureSession() async -> AVCaptureSession?
@@ -28,7 +28,7 @@ An example in checking for the method is as follows:
 ```
 
 ### Set PiP Controller
-Each **ACBClientCall** object has a `setPipController` method that is required for Picture in Picture. This method informs the **SDK** who the **AVPictureInPictureController** is and allows us to receive its delegate methods. This is required for us to handle the **SampleBufferView** accordingly when tha app activates Picture in Picture.
+Each **ACBClientCall** object has a `setPipController` method that is required for Picture in Picture. This method informs the **SDK** who the **AVPictureInPictureController** is and allows us to receive its delegate methods. This is required for us to handle the **RemoteBufferView** accordingly when the app activates Picture in Picture.
 ```swift
 @available(iOS 15, *)
 @MainActor @objc final public func setPipController(_ controller: AVPictureInPictureController) async
@@ -54,17 +54,17 @@ if show {
 }
 
 func setUpPip() async {
-guard let sampleBufferView = sampleBufferView else { return }
+guard let remoteBufferView = remoteBufferView else { return }
 
 if #available(iOS 16.0, *) {
         guard let captureSession = captureSession else { return }
         if captureSession.isMultitaskingCameraAccessSupported {
             let pipVideoCallViewController = AVPictureInPictureVideoCallViewController()
             pipVideoCallViewController.preferredContentSize = CGSize(width: 1080, height: 1920)
-            pipVideoCallViewController.view.addSubview(sampleBufferView)
+            pipVideoCallViewController.view.addSubview(remoteBufferView)
 
             let source = AVPictureInPictureController.ContentSource(
-            activeVideoCallSourceView: sampleBufferView,
+            activeVideoCallSourceView: remoteBufferView,
             contentViewController: pipVideoCallViewController)
 
             pipController = AVPictureInPictureController(contentSource: source)
@@ -81,7 +81,7 @@ if #available(iOS 16.0, *) {
 }
 
 func aChipLogic() async {
-    let layer = sampleBufferView.layer as? AVSampleBufferDisplayLayer
+    let layer = remoteBufferView.layer as? AVSampleBufferDisplayLayer
     guard let sourceLayer = layer else { return }
 
     let source = AVPictureInPictureController.ContentSource(sampleBufferDisplayLayer: sourceLayer, playbackDelegate: self)

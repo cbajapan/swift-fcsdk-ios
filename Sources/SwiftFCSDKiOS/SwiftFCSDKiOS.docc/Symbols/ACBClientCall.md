@@ -18,24 +18,16 @@ Please see <doc:VideoCalls> for an explanation of how to use ACBClientCall
     @objc final public var remoteView: UIView?
 
     /// The call's ``UIView`` used for displaying remote buffer views intended for use in picture in picture enabled applications
-    @available(*, deprecated, message: "use sampleBufferView() async -> UIView? instead, This method will be removed in future versions of FCSDKiOS")
     @objc final public func remoteBufferView() async -> UIView?
 
-    /// The call's ``UIView`` used for displaying remote buffer views intended for use in picture in picture enabled applications
-    @MainActor @objc final public func sampleBufferView() async -> UIView?
-
     /// The client should always remove the `remoteBufferView()` when finished using the bufferView.
-    @available(*, deprecated, message: "use removeSampleView() async instead, This method will be removed in future versions of FCSDKiOS")
     @objc final public func removeBufferView() async
 
-    /// The client should always remove the `remoteBufferView()` when finished using the bufferView.
-    @objc final public func removeSampleView() async
-
     /// The call's ``UIView`` used for displaying local buffer views intended for use in picture in picture/Virtual Background enabled applications
-    @MainActor @objc final public func previewBufferView() async -> UIView?
+    @MainActor @objc final public func localBufferView() async -> UIView?
 
     /// The client should always remove the `removePreviewView()` when finished using the previewView.
-    @objc final public func removePreviewView() async
+    @objc final public func removeLocalBufferView() async
 
     /// The AVCaptureSession that the PreviewBufferView provides
     @objc final public func captureSession() async -> AVCaptureSession?
@@ -44,7 +36,7 @@ Please see <doc:VideoCalls> for an explanation of how to use ACBClientCall
     @MainActor @objc final public func setPipController(_ controller: AVPictureInPictureController) async
 
     /// Feeds the UIImage from the consuming app into the SDK for Video Processing 
-    @objc final public func feedBackgroundImage(_ image: UIImage, mode: FCSDKiOS.VirtualBackgroundMode = .image) async
+    @objc final public func feedBackgroundImage(_ image: UIImage? = nil, mode: FCSDKiOS.VirtualBackgroundMode = .image) async
 
     /// Removes the Background Image from the Video Processsing flow 
     @objc final public func removeBackgroundImage() async

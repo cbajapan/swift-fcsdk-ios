@@ -21,6 +21,8 @@
 We are happy to introduce *DocC* documenation for SwiftFCSDKiOS. Simply build the documentaion with **Command + Control + Shift + D** in your app and have all the documentation that you need right in Xcode.
 
 ## Version Changes
+[Version 4.2.1 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.1.md 'Version 4.2.1')
+
 [Version 4.2.0 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.0.md 'Version 4.2.0')
 
 [Version 4.1.0 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.1.0.md 'Version 4.1.0')

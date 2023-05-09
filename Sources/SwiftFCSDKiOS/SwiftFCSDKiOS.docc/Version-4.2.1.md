@@ -26,11 +26,17 @@ if #available(iOS 14.0, *) {
 #if canImport(_Concurrency)
 // Your Compile Time Code
 #endif
-
 ```
-### Fixed **setDefaultAudio()** not working
+
+*Please take note that in some Xcode projects issues have occured if your application is running on iOS 11 and 12 where the project will crash on the initilization of the SDK. In this case you need to make sure the build setting entitled **Always Embed Swift Standard Libraries** is set to **Yes** .*
+
+### Fixed *setDefaultAudio()* not working
 When `setDefaultAudio()` was called, it did not properly use the set value when audio hardware routes changed. We now have fixed this issue.
 
 ### Status Media changed to media pending after agent answered
 We fixed an issue involving the call state changing at a certain point in the call flow's stream of events when receiving an inbound call.
+
+### Fixed an issue where *setCamera()* was not functioning properly
+We fixed an issue where setting the camera always was toggling instead of the indicated camera position.
+
 

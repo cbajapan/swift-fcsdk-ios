@@ -9,7 +9,7 @@ s.license           = { :type => 'Commercial', :text => 'Copyright Communication
 
 s.source            = { :http => 'https://swift-sdk.s3.us-east-2.amazonaws.com/real_time/WebRTC-m110.xcframework.zip' }
 
-s.platforms = { :ios => "13.0" }
+s.platforms = { :ios => "11.0" }
 
 s.vendored_frameworks = 'WebRTC.xcframework'
 end

@@ -96,7 +96,7 @@ end
 *If that is the case please try running the following Pod Commands*
 
 ```
-sudo rm -fr ~/.cocoapods/repos/cbajapan-swift-fcsdk-ios
+sudo rm -rf ~/.cocoapods/repos/cbajapan-swift-fcsdk-ios
 pod setup
 pod install
 ```

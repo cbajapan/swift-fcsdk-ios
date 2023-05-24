@@ -91,6 +91,22 @@ end
 6. Run `pod install`
 7. You now will use the **.xcworkspace** instead of **.xcodeproj** as a project source.
 
+**NOTE:** if you have trouble installing or updating the CocoaPod, you may have an issue with the local pod repo.
+
+*If that is the case please try running the following Pod Commands*
+
+```
+sudo rm -fr ~/.cocoapods/repos/cbajapan-swift-fcsdk-ios
+pod setup
+pod install
+```
+
+Afterwards you can run the install or update command again
+
+```
+pod install
+```
+
 ## Import the SDK into your project ##
 Swift
 ```swift

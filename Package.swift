@@ -18,9 +18,9 @@ let package = Package(
             name: "SwiftFCSDKiOS",
             dependencies: [
                 "FCSDKiOS",
-                "CBARealTime"
+                "WebRTC"
             ]),
-        .binaryTarget(name: "FCSDKiOS", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/client_sdk/FCSDKiOS-4.2.3.xcframework.zip", checksum: "132bfaa12dca7ccffb3693ff7193a72418d6dde35058827f1a01ddc67a52c550"),
-        .binaryTarget(name: "CBARealTime", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/real_time/CBARealTime-m110-1.0.0.xcframework.zip", checksum: "a2f4cee24ce4389aa00feb86edd8dc8c67a43aedf1f8b4ceb5998c94f16a5e3d")
+        .binaryTarget(name: "FCSDKiOS", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/client_sdk/FCSDKiOS-4.2.3.xcframework.zip", checksum: "2e8db13e03e73eff34a996aab419ad583070e49c0b4314bb20c322a7f31d2d64"),
+        .binaryTarget(name: "WebRTC", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/real_time/WebRTC-m110.xcframework.zip", checksum: "2750cf1087b2441d67208ca2b0905578b4ad1797a68d2d2758d0f075500f0011")
     ]
 )

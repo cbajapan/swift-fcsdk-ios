@@ -21,6 +21,8 @@
 We are happy to introduce *DocC* documentation for SwiftFCSDKiOS. Simply build the documentation with **Command + Control + Shift + D** in your app and have all the documentation that you need right in Xcode.
 
 ## Version Changes
+[Version 4.2.4 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.4.md 'Version 4.2.4')
+
 [Version 4.2.3 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.3.md 'Version 4.2.3')
 
 [Version 4.2.2 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.2.md 'Version 4.2.2')
@@ -67,6 +69,33 @@ dependencies: [
     .package(url: "https://github.com/cbajapan/swift-fcsdk-ios.git", from: "4.0.0")
 ]
 ```
+
+There at times may be some struggles updating **FCSDKiOS** versions or resolving the package due to Xcode and SPM caching the Package, this is normal behavior in iOS development with BinaryTargets in a SwiftPackage. Here is a list of trouble shooting steps you may follow.
+
+Under File -> Packages. you will find 3 options
+    * Reset Package Cache
+    * Resolve Package Versions
+    * Update To Latest Package Versions
+    
+It is always a good idea to -
+    1. Clean the build folder
+    2. *Resolve Package Versions*
+    3. If that fails then *Reset Package Cache*
+
+While Updating the version if you rin into similar issues try and...
+    1. Clean the build folder
+    2. *Update Package Versions*
+    
+If you still have issues then -
+    1. Remove the package from the dependencies
+    2. Clean the build folder
+    3. Close Xcode
+    4. Delete Derived Data for the project
+    5. Open Xcode
+    6. Re-add FCSDKiOS
+    
+**It is important to note that if yoour project has a compiler error stating that it cannot find the Module, then you should make sure that the package is linked in the App's Target's Build Phases section.**
+
 
 ## CocoaPods ##
 

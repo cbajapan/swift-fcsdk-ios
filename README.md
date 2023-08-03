@@ -1,10 +1,10 @@
 # Swift FCSDK iOS
 
 ## System Minimum Requirements ##
-* Xcode 13
-* Monterey 12.1
-* swift-tools-version:5.5
-* iOS 13
+* Xcode 14
+* Ventura 13.0
+* swift-tools-version: 5.7
+* iOS 14
 
 ## Binaries
 | **Platform / arch** | arm64  | x86_x64 |
@@ -12,6 +12,16 @@
 | **iOS (device)**    |   ✅   |   N/A   |
 | **iOS (simulator)** |   ✅   |    ✅   |
 
+**Important Notice**
+
+While out SDK may work on older operating systems we only support the system minimum requirements. The system minimum requirements indicate what is available on the current latest release. Each release is cut at a commit of our SDK. That commit may support other system minimum version requirements. We do make changes to older versions. We improve and support on top of the latest version released.
+
+
+Applications developed with FCSDKiOS are compatible on operating systems running iOS 14 and later. Due to our operating system availability restrictions on devices that support iOS 14 and greater can be used.
+
+You may see different specs located in the `Package.swift` file or the `FCSDKiOS.podspec`. This does not mean we support a lower operating system. This is allowed in order to allow applications to import our SDK, but not use it at compile or run time with the appropriate checks in the applications code base. Some applications may wish to support older operating systems and only use FCSDKiOS if the application running it is an approved operating system.
+
+If you are having issues on an unsupported operating system please either upgrade you application's minimum verion or disclude the SDK on the said version.
 
 #### Please Follow this repository for the latest SDK notifications.
 
@@ -21,6 +31,8 @@
 We are happy to introduce *DocC* documentation for SwiftFCSDKiOS. Simply build the documentation with **Command + Control + Shift + D** in your app and have all the documentation that you need right in Xcode.
 
 ## Version Changes
+[Version 4.2.5 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.5.md 'Version 4.2.5')
+
 [Version 4.2.4 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.4.md 'Version 4.2.4')
 
 [Version 4.2.3 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.3.md 'Version 4.2.3')

@@ -14,7 +14,7 @@ Version 4.2.5 has several bug fixes and performance improvements. Below is a lis
 
 ### Introduced and Deprecated methods that should be called from an Async Context in order to protect synchronization of state.
 
-## Below is a list of methods where the synchonous methods were deprecated and we request you to use the listed async versions bellow
+## Below is a list of methods where synchronous versions of those methods were deprecated. We request you to use the listed async versions bellow
 
 ```swift
 await call.enableLocalVideo(false)

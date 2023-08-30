@@ -41,11 +41,15 @@ Please see <doc:VideoCalls> for an explanation of how to use ACBClientCall
 
     /// Sets the camera to be used based off the ``ACBClientCall``'s camera.
     /// - Parameter camera: Camera postion i.e (.front, .back)
+    @available(*, deprecated, message: "Please use async version, Future versions of FCSDKiOS will remove this method.")
     @objc final public func setCamera(_ camera: AVCaptureDevice.Position)
+    @objc final public func setCamera(_ camera: AVCaptureDevice.Position) async
 
     /// Used to capture recommended settings
     /// - Returns: The device Info's recommended capture settings
+    @available(*, deprecated, message: "Please use async version, Future versions of FCSDKiOS will remove this method.")
     @objc final public func recommendedCaptureSettings() -> [FCSDKiOS.ACBVideoCaptureSetting]?
+    @objc final public func recommendedCaptureSettings() -> [FCSDKiOS.ACBVideoCaptureSetting]? async
 }
 
 extension ACBClientPhone {

@@ -6,9 +6,9 @@ This article describes changes in version 4.2.5 of FCSDKiOS
 
 Version 4.2.5 has several bug fixes and performance improvements. Below is a list of bug fixes.
 
-### We fixed an issue where setting the ACBClientCallDelegate may not have been setting.
+### We fixed an issue where setting the ACBClientCallDelegate may not have been set.
 
-### Ensursing that when a new view is fed to the SDK's remote and local views they are created properly.
+### Ensuring that when a new view is fed to the SDK's remote and local views they are created properly.
 
 ### Fixed an issue where iOS 13 users may not have been connecting to the socket.
 
@@ -20,7 +20,7 @@ Version 4.2.5 has several bug fixes and performance improvements. Below is a lis
 
 ### Introduced and Deprecated methods that should be called from an Async Context in order to protect synchronization of state.
 
-## Below is a list of methods where the synchronous methods were deprecated and we request you to use the listed async versions bellow
+## Below is a list of methods where the synchronous methods were deprecated and we request you to use the listed async versions below
 
 ```swift
 await call.enableLocalVideo(false)
@@ -48,25 +48,25 @@ _ = await acbuc.phone.recommendedCaptureSettings()
 
 *`.horizontal`*
 
-The horizontal scale mode is designed to scale the content with it's aspect ratio to the widest point. This means if your view is too short in relationship with the aspect ratio than it will clip the height of the content. If the view is too tall then you will see back space on the top and bottom of the views content. 
+The horizontal scale mode is designed to scale the content with its aspect ratio to the widest point. This means if your view is too short in relationship with the aspect ratio, then it will clip the height of the content. If the view is too tall, then you will see black space on the top and bottom of the view's content. 
 
 *`.vertical`*
 
-The vertical scale mode is designed to scale the content with it's aspect ratio to the tallest point. This means if your view is too narrow in relationship with the aspect ratio than it will clip the width of the content. If the view is too wide then you will see back space on the left and right of the views content. 
+The vertical scale mode is designed to scale the content with its aspect ratio to the tallest point. This means if your view is too narrow in relationship with the aspect ratio, then it will clip the width of the content. If the view is too wide, then you will see black space on the left and right of the view's content. 
 
 *`.fill`*
 
-The fill scale mode is designed to scale the content to fill the view's container with it's aspect ratio. This means the view will clip both height and width of the content in order to fill the view. 
+The fill scale mode is designed to scale the content to fill the view's container with its aspect ratio. This means the view will clip both height and width of the content in order to fill the view. 
 
 *`.none`*
 
-The none scale mode feeds the raw data into the view with out any scaling.
+The none scale mode feeds the raw data into the view without any scaling.
 
 **`shouldScaleWithOrientation`**
 
-This boolean property is intended for use when the scale mode is set to *.vertical* or *.horizontal*. For instance you may want to start out a call in .vertical mode for both `localBufferView` and `remoteBufferView`, however when a device rotates you may then want to scale to the opposite longest point *i.e.* `.horizontal` mode. Setting this parameter to true will give you this behavior.
+This boolean property is intended for use when the scale mode is set to *.vertical* or *.horizontal*. For instance you may want to start out a call in `.vertical` mode for both `localBufferView` and `remoteBufferView`, however when a device rotates, you may then want to scale to the opposite longest point *i.e.* `.horizontal` mode. Setting this parameter to true will give you this behavior.
 
-**Here is what these properties look like in use**
+**Here are what these properties look like in use**
 
 ```swift
 remoteBufferView(
@@ -81,4 +81,4 @@ localBufferView(
 
 ```
 
-These API's provide you with a truly customizable approach in your applications. 
+These APIs provide you with a truly customizable approach in your applications. 

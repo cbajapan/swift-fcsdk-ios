@@ -228,23 +228,6 @@ Then you can just run the shell script in it's directory
 `sh build.sh`
 You should have an XCFramework inside of the build folder indicated in `-output`
 
-## Logging
-In order to help you with your debugging, we have provided a log to file functionality while in **DEBUG** mode. In order to access the file run the program flow with your device attached. In order to use this fuctionality you may use the following line of code. Please note you can only use this line of code once per app initialization.
-Swift
-```swift
-ACBUC.logToFile()
-```
-Objective-C
-```swift
-[ACBUC logToFile];
-```
-After the program flow has completed and contains any relevent issues you expected you can navigate to Xcode's Window Tab in the status bar, select Devices and Simulators. Select the Device you ran your program on and download the Container.
-
-![An image showing how to add FCSDKiOS](image_9.png)
-
-Go ahead and right click on the file and select **Show Package Contents**. Next navigate into AppData, then into the Library Directory where you should find a file called **fcsdk.log**. Inspect the file to make sure it contains what you want to share.
-
-
 ## Self-Signed Certificates
 
 If you are connecting to a server that uses a self-signed certificate, you need to add that certificate, and the associated CA root certificate, to the keychain on your client.

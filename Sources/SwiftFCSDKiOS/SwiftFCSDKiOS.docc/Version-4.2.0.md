@@ -6,7 +6,7 @@ This article describes changes in version 4.2.0 of FCSDKiOS
 Version 4.2.0 reaches a new milestone in terms of Video Calls. We now support Picture in Picture and Virtual Background. The following Topics are the changes that we have made.
 
 ### Local Buffer View
-This method is designed to create a metal rendered `UIView` for your local video during a video call. This method must be used if you desire to use our **Virtual Background** feature.
+This method is designed to create a metal rendered `UIView` for your local video during a video call, when needed. This method must be used if you desire to use our **Virtual Background** feature.
 When a call is finished the **SDK** consumer is required to clean up the call by calling the `removeLocalBufferView` method. 
 ```swift
 @available(iOS 15, *)
@@ -19,7 +19,7 @@ When a call is finished the **SDK** consumer is required to clean up the call by
 ```
 
 ### Remote Buffer View
-This method is designed to create a metal rendered `UIView` for your remote video during a video call. This method must be used if you desire to use our **Picture in Picture** feature.
+This method is designed to create a metal rendered `UIView` for your remote video during a video call, when needed. This method must be used if you desire to use our **Picture in Picture** feature.
 When a call is finished the **SDK** consumer is required to clean up the call by calling the `removeBufferView` method. 
 ```swift
 @available(iOS 15, *)

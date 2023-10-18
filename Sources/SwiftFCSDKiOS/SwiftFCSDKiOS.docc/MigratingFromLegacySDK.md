@@ -27,7 +27,7 @@ Objective-C
 
 ### Threading
 
-- We have created a new threading model built from tools by Apple. This threading model makes the best use of the voice and video concurrency flow. With that being said, whenever you are interacting with the UI in your application while interacting with the call flow, you will need to make sure you are running your code on the main thread. For example when we make a call using FCSDKiOS in the sample app, we are interacting with our apps UI during the call flow, therefore we need to make those calls on the main thread. You can run code on the main thread like so. 
+**FCSDKiOS** is a Swift Concurrency based SDK. The SDK is built around the concept of **Tasks**, **Actors**, and other **Swift Concurrency** features. Whenever you are interacting with the UI in your application while interacting with the call flow, you will need to make sure you are running your code on the main thread. For example when we make a call using FCSDKiOS in the sample app, we are interacting with our apps UI during the call flow, therefore we need to make those calls on the main thread. You can run code on the main thread like so. 
 
 Async/Await
 ```swift

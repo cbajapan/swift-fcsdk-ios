@@ -8,19 +8,19 @@ It is strongly encouraged to move away from the old Reachability API that Apple 
 
 ## Note
 
-You may want to consider reactively monitoring your network changes in order for FCSDK to always know when you have an internet connection, rather than only when a ACBUC Object is created.
+You may want to consider reactively monitoring your network changes in order for FCSDK to always know when you have an internet connection, rather than only when a ACBUC Object is created. FCSDKiOS is designed in order to behave according to network activity. It is not designed to behave according to arbitrary network connections.
 
 ## Responding to Network Issues
 
-As the iOS SDK is network-based, it is essential that the client application is aware of any loss of connection. **Fusion Client SDK** does not dictate how you implement network monitoring; however, the sample application uses the SystemConfiguration framework.
+As the iOS SDK is network-based, it is essential that the client application is aware of any loss of connection. **Fusion Client SDK** does not dictate how you implement network monitoring; however, the sample application uses the Network.framework.
 
 Depending on the nature of the issues with the network, the client application should react differently.
 
 ### Reacting to Network Loss
 
-In the event of network connection problems, the SDK automatically tries to re-establish the connection. It will make seven attempts at the following intervals: 0.5s, 1s, 2s, 4s, 4s, 4s, 4s. A call to the willRetryConnectionNumber:in:\] on the ACBUCDelegate precedes each of these attempts. The callback supplies the attempt number (as an Int) and the delay before the next attempt (as an TimeInterval) in its two parameters.
+In the event of network connection problems*, the SDK automatically tries to re-establish the connection. It will make seven attempts at the following intervals: 0.5s, 1s, 2s, 4s, 4s, 4s, 4s. A call to the willRetryConnectionNumber:in:\] on the ACBUCDelegate precedes each of these attempts. The callback supplies the attempt number (as an Int) and the delay before the next attempt (as an TimeInterval) in its two parameters.
 
-When all reconnection attempts are exhausted, the ACBUCDelegate receives the ucDidLoseConnection callback, and the retries stop. At this point the client application should assume that the session is invalid. The client application should then log out of the server and reconnect via the web app to get a new session, as described in the <doc:CreatingSession> section.
+When all reconnection attempts are exhausted, the ACBUCDelegate receives the ucDidLoseConnection callback, and the retries stop. At this point the client application should assume that the session is invalid. The client application should then log out of the server and reconnect via the web app to get a new session, as described in the <doc:CreatingSession> section. *This behavior explains why we define network connection problems as such (Internet Connection Required)*
 
 If any of the reconnection attempts are successful, the ACBUCDelegate receives the ucDidReestablishConnection callback.
 
@@ -28,7 +28,11 @@ Note that both the willRetryConnectionNumber and ucDidReestablishConnection are 
 
 The retry intervals, and the number of retries attempted by the SDK are subject to change in future releases. Do not rely on the exact values given above.
 
+- **A network connection problem is defined as, "The client(iOS) has an internet connection, The server is online, The server unexpectedly closes the WebSocket"**
+
 ### Reacting to Network Changes
+
+**FCSDKiOS** has been designed with **Network.framework** as the backbone of the networking layer, that means when moving between internet path types(i.e. Wi-Fi, cellular, etc.) the SDK will recognize that the path type has changes and automatically try and reconnect without the requirement of manually tearing down the socket and then reconnecting. This proves helpful in scenarios such as getting on and off elevators. However if you would like to, you still may manually tear down the socket as you would on **BSD Sockets** as described bellow.
 
 If the issues with the network are caused by a temporary loss of connectivity (for example, when moving between two Wi-Fi networks, or from a Wi-Fi network to a cellular data connection), the client application should not log out from the session and log back in (as described in the **Reacting to Network Loss** section), as all session state will be lost.
 
@@ -48,6 +52,14 @@ The application can implement the didReportInboundQualityChange callback on the 
     func call(_ call: ACBClientCall?, didReportInboundQualityChange inboundQuality: Int) {
         // Reflect in UI
         print("Call Quality: \(inboundQuality)")
+    }
+```
+
+**Async/Await**
+```swift
+    func didReportInboundQualityChange(_ inboundQuality: Int, with call: ACBClientCall) async {
+         // Reflect in UI
+        print("Call Quality: \(inboundQuality)"
     }
 ```
 

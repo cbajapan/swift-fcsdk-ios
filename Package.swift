@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -20,7 +20,7 @@ let package = Package(
                 "FCSDKiOS",
                 "WebRTC"
             ]),
-        .binaryTarget(name: "FCSDKiOS", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/client_sdk/FCSDKiOS-4.2.6-beta7.xcframework.zip", checksum: "4d0638ceaaa3e2c11fad4ed2bb925076c4afa80c4dfdc8d09d495beff846865b"),
+        .binaryTarget(name: "FCSDKiOS", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/client_sdk/FCSDKiOS-4.2.6-beta8.xcframework.zip", checksum: "077c3ba261286c83409c2b33759d7bcecacef0046c7659aed930174366d71d3d"),
         .binaryTarget(name: "WebRTC", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/real_time/WebRTC-m117.xcframework.zip", checksum: "7950151686d41d8fc33e69a9ad5bd47cad24d20691b4167e9fa4d8d156a8fca6")
     ]
 )

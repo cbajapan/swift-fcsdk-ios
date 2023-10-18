@@ -5,7 +5,7 @@ Please see <doc:VideoCalls> for an explanation of how to use ACBClientCall
 ## Overview
 
 ```swift
-/// ``ACBClientPhone`` is an object that does all of the phone related work. You can expecte inbound and outbound call flows to originate from this class.
+/// ``ACBClientPhone`` is an object that does all of the phone related work. You can expected inbound and outbound call flows to originate from this class.
 /// It is important to note that ``ACBClientPhone`` is lazily initialize once per ``ACBUC`` registration.
 @objc final public class ACBClientPhone : NSObject {
 
@@ -24,7 +24,7 @@ Please see <doc:VideoCalls> for an explanation of how to use ACBClientCall
     /// The preferred capture resolution. If no preferred resolution is specified, the best SD resolution that the device is capable of will be chosen.
     @objc final public var preferredCaptureResolution: FCSDKiOS.ACBVideoCapture
 
-    /// The preferred capture framerate. If no preferred frame rate is specified, the best frame rate that the device is capable of will be chosen.
+    /// The preferred capture frame rate. If no preferred frame rate is specified, the best frame rate that the device is capable of will be chosen.
     @objc final public var preferredCaptureFrameRate: Int
 
     /// This computed property is used to set the App's preview view for video calls using `ACBView`.
@@ -33,7 +33,7 @@ Please see <doc:VideoCalls> for an explanation of how to use ACBClientCall
     /// This computed property is used to set the App's remote view for video calls using `ACBView`.
     @MainActor @objc final public var remoteView: UIView?
 
-    /// This method can be used to request permisions to use the microphone and camera.
+    /// This method can be used to request permissions to use the microphone and camera.
     /// - Parameters:
     ///   - audio: A boolean to indicate whether or not to request audio permissions
     ///   - video: A boolean to indicate whether or not to request video permissions

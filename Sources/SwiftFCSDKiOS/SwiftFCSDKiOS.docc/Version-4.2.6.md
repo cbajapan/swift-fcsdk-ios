@@ -27,3 +27,6 @@ Version 4.2.6 has several bug fixes and performance improvements. Below is a lis
 ### iOS12 loading crash addressed
 
 ### Video Direction Bug
+
+### Uses Version m117 of WebRTC
+

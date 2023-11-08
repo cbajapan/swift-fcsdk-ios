@@ -31,6 +31,8 @@ If you are having issues on an unsupported operating system, please either upgra
 We are happy to introduce *DocC* documentation for SwiftFCSDKiOS. Simply build the documentation with **Command + Control + Shift + D** in your app and have all the documentation that you need right in Xcode.
 
 ## Version Changes
+[Version 4.2.6 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.6.md 'Version 4.2.6')
+
 [Version 4.2.5 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.5.md 'Version 4.2.5')
 
 [Version 4.2.4 ](https://github.com/cbajapan/swift-fcsdk-ios/blob/main/Sources/SwiftFCSDKiOS/SwiftFCSDKiOS.docc/Version-4.2.4.md 'Version 4.2.4')

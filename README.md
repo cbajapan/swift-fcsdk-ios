@@ -4,7 +4,7 @@
 * Xcode 14
 * Ventura 13.0
 * swift-tools-version: 5.7
-* iOS 14
+* iOS 15
 
 ## Binaries
 | **Platform / arch** | arm64  | x86_x64 |

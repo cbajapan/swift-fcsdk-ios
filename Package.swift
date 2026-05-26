@@ -20,7 +20,7 @@ let package = Package(
                 "FCSDKiOS",
                 "WebRTC"
             ]),
-        .binaryTarget(name: "FCSDKiOS", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/client_sdk/FCSDKiOS-4.3.6-4.xcframework.zip", checksum: "ffee98c81acc81698574c543771b5ebbb17ce287b76a0db80a8ec8fa59f4cd23"),
+        .binaryTarget(name: "FCSDKiOS", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/client_sdk/FCSDKiOS-4.3.6-beta8.xcframework.zip", checksum: "5e0ba59fd7ccd7c12b6a18caae1b21aaabcda848a2021495c083a84134f42e6a"),
         .binaryTarget(name: "WebRTC", url: "https://swift-sdk.s3.us-east-2.amazonaws.com/real_time/WebRTC-m130.xcframework.zip", checksum: "b6ba196509dc0a2217f7a940beb1236e29c2f4f7a5cbd51dfdd892ccae0c9f41")
     ]
 )

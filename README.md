@@ -1,6 +1,6 @@
 # Swift FCSDK iOS
 
-## IMPORTANT NOTICE - Repo changing locattion
+## IMPORTANT NOTICE - Repo changing location
 As was communicated via email to our valued customers:
 
 _"As part of our recent transition from CBA to Lyviss, our repository has moved to a new public location: [lyviss-app/swift-fcsdk-ios](https://github.com/lyviss-app/swift-fcsdk-ios)_

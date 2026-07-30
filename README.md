@@ -1,5 +1,18 @@
 # Swift FCSDK iOS
 
+## IMPORTANT NOTICE - Repo to be made read-only on Thursday, 6 Aug 2026
+As was communicated via email to our valued customers:
+
+_"As part of our recent transition from CBA to Lyviss, our repository has moved to a new public location: [lyviss-app/swift-fcsdk-ios](https://github.com/lyviss-app/swift-fcsdk-ios)_
+
+_Recommended Action: To ensure uninterrupted functionality and long-term compatibility with future updates, your iOS development team should update their local Git remote URLs or dependency managers (e.g., Swift Package Manager, CocoaPods, or Carthage)._
+
+_Please rest assured that it is business as usual at Lyviss. We remain fully committed to maintaining and updating our iOS Swift software alongside the rest of our product suite. If you or your technical team have any questions or require assistance during this update, please don't hesitate to reach out."_
+
+Additionally, this repo will be set to read-only on Thursday, 6 August 2026.
+
+Thank you for continued support!
+
 ## System Minimum Requirements ##
 * Xcode 14
 * Ventura 13.0

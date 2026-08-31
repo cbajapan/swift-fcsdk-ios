@@ -1,15 +1,13 @@
-# Swift FCSDK iOS
+# Swift FCSDK iOS (ARCHIVED)
 
-## IMPORTANT NOTICE - Action Required before 31 August 2026
-As was communicated via email to our customers, the location of this repo is changing. Below is a summary:
-
-_"As part of our recent transition from CBA to Lyviss, our repository has moved to a new public location: [lyviss-app/swift-fcsdk-ios](https://github.com/lyviss-app/swift-fcsdk-ios)_
+## IMPORTANT NOTICE - This repository has been archived
+As part of our recent transition from CBA to Lyviss, our repository has moved to a new public location: [lyviss-app/swift-fcsdk-ios](https://github.com/lyviss-app/swift-fcsdk-ios)_
 
 _Recommended Action: To ensure uninterrupted functionality and long-term compatibility with future updates, your iOS development team should update their local Git remote URLs or dependency managers (e.g., Swift Package Manager, CocoaPods, or Carthage). This will need to be completed **before 31 August 2026**, when the old repo will no longer be available._
 
-_Please rest assured that it is business as usual at Lyviss. We remain fully committed to maintaining and updating our iOS Swift software alongside the rest of our product suite. If you or your technical team have any questions or require assistance during this update, please don't hesitate to reach out."_
-
 To all our valued customers, thank you for your continued support. We look forward to continue working with you!
+
+---
 
 ## System Minimum Requirements ##
 * Xcode 14
